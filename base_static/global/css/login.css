@@ -1,0 +1,70 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 10px;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+main img {
+    width: 200px; /* Ajuste para o tamanho desejado */
+    height: 200px; /* O mesmo valor de largura para manter a proporção circular */
+    border-radius: 50%; /* Torna a borda circular */
+    object-fit: cover; /* Garante que a imagem preencha o círculo sem distorção */
+    border: 2px solid #000000; /* Adiciona uma borda opcional */
+    align-items: center;
+
+}
+.login-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin-left: 10;
+}
+.login-container h2 {
+    margin: 0 0 20px;
+    text-align: center;
+}
+.form-group {
+    margin-bottom: 15px;
+    
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 95%;
+    padding: 12px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffb2c0;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #d495a1;
+}

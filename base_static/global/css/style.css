@@ -1,0 +1,56 @@
+/* Estilo global */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo do header */
+header {
+    background-color: #ffb2c0;
+    color: white;
+    padding: 20px 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+}
+
+/* Estilo do título principal */
+header h1 {
+    margin: 0;
+    font-size: 2em;
+    margin-top: 0px;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: right;
+    gap: 15px;
+}
+
+header nav ul li {
+    display: inline;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+header nav ul li a:hover {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+}
+#logo-header{
+    justify-content: left;
+    height: 20px;
+    width: 20px;
+}
+/* CSS tela */

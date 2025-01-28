@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+    <link rel="stylesheet" href="{% static "global/css/login.css" %}">
+</head>
+<body>
+    <main class='main-login'>
+        <img src="{% static "global/imgs/logo.png" %}" alt="">
+        <div class="login-container">
+            <h2>Telefone</h2>
+            <form action="#" method="post">
+                <div class="form-group">
+                    <input type="tel" id="phone" name="phone" placeholder="Digite seu telefone" required>
+                </div>
+                
+                <button type="submit" class="btn">Entrar</button>
+            </form>
+        </div>
+    </main>
+    <script src='https://code.jquery.com/jquery-3.7.1.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+    <script>$('#phone').mask('(00) 0000-0000', {placeholder: "(__) ____-____"});</script>
+    <script>$('.placeholder').mask("00/00/0000", );</script>
+</body>
+</html>
