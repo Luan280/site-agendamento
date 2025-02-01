@@ -1,1 +1,73 @@
-{% extends "global/base.html" %}
+{% extends "global/partials/base.html" %}
+{% load static %}
+
+
+{% comment %} Bloco do link para o CSS do Index{% endcomment %}
+{% block css-index %}
+		<link rel="stylesheet" href="{% static "global/css/index.css" %}">
+{% endblock css-index %}
+
+{% comment %} Bloco do link para o CSS do Header{% endcomment %}
+{% block css-header %}
+		<link rel="stylesheet" href="{% static "global/css/header.css" %}">
+{% endblock css-header %}
+
+
+
+{% comment %} Inclui o Header {% endcomment %}
+{% block header %}
+		{% include "global/partials/header.html" %}
+{% endblock header %}
+
+{% comment %} Inclui o Header {% endcomment %}
+{% block mensagem %}
+		{% if mensagem %}   
+			{{ mensagem }}
+		{% endif %}
+{% endblock mensagem %}
+
+{% comment %} Inclui o Calendário no index {% endcomment %}
+{% block calendar %}
+	<h1>Calendário do Mês de {{ mes}}</h1>
+	<div class="calendario">
+			{% for dia in dias_do_mes %}
+					<div class="dia" onclick="abrirHorarios('{{ dia.data }}')">
+							{{ dia.dia }}
+					</div>
+			{% endfor %}
+	</div>
+
+	<!-- Modal para exibir horários -->
+	<div id="modal" class="modal">
+			<div class="modal-content">
+					<span class="fechar" onclick="fecharModal()">&times;</span>
+					<h2>Horários Disponíveis</h2>
+					<div id="horarios-lista"></div>
+			</div>
+	</div>
+
+	<script>
+			function abrirHorarios(data) {
+					fetch(`/horarios_disponiveis/${data}/`)
+							.then(response => response.json())
+							.then(data => {
+									let listaHorarios = document.getElementById("horarios-lista");
+									listaHorarios.innerHTML = "";
+									if (data.horarios.length > 0) {
+											data.horarios.forEach(horario => {
+													let item = document.createElement("p");
+													item.textContent = horario;
+													listaHorarios.appendChild(item);
+											});
+									} else {
+											listaHorarios.innerHTML = "<p>Sem horários disponíveis</p>";
+									}
+									document.getElementById("modal").style.display = "block";
+							});
+			}
+
+			function fecharModal() {
+					document.getElementById("modal").style.display = "none";
+			}
+	</script>
+{% endblock calendar %}
