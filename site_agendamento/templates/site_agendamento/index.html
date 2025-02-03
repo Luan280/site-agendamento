@@ -28,46 +28,31 @@
 
 {% comment %} Inclui o Calendário no index {% endcomment %}
 {% block calendar %}
-	<h1>Calendário do Mês de {{ mes}}</h1>
-	<div class="calendario">
-			{% for dia in dias_do_mes %}
-					<div class="dia" onclick="abrirHorarios('{{ dia.data }}')">
-							{{ dia.dia }}
+<div class="container">
+	<h2>Calendário de Agendamentos - {{ mes }}/{{ ano }}</h2>
+
+	<div class="calendar">
+			{% for item in calendario %}
+					<div class="day" onclick="document.getElementById('modal-{{ item.dia }}').classList.add('active')">
+							{{ item.dia.day }}
+					</div>
+
+					<div id="modal-{{ item.dia }}" class="modal">
+							<h3>Escolha um horário - {{ item.dia|date:"d/m/Y" }}</h3>
+							<ul>
+									{% for horario in item.horarios %}
+											
+											<a class="horario" href="{% url 'agendar_horario' item.dia horario|time:'H:i' %}">
+													{{ horario|time:"H:i" }}
+											</a>
+											
+									{% empty %}
+											<li>Sem horários disponíveis</li>
+									{% endfor %}
+							</ul>
+							<button class="close" onclick="document.getElementById('modal-{{ item.dia }}').classList.remove('active')">Fechar</button>
 					</div>
 			{% endfor %}
 	</div>
-
-	<!-- Modal para exibir horários -->
-	<div id="modal" class="modal">
-			<div class="modal-content">
-					<span class="fechar" onclick="fecharModal()">&times;</span>
-					<h2>Horários Disponíveis</h2>
-					<div id="horarios-lista"></div>
-			</div>
-	</div>
-
-	<script>
-			function abrirHorarios(data) {
-					fetch(`/horarios_disponiveis/${data}/`)
-							.then(response => response.json())
-							.then(data => {
-									let listaHorarios = document.getElementById("horarios-lista");
-									listaHorarios.innerHTML = "";
-									if (data.horarios.length > 0) {
-											data.horarios.forEach(horario => {
-													let item = document.createElement("p");
-													item.textContent = horario;
-													listaHorarios.appendChild(item);
-											});
-									} else {
-											listaHorarios.innerHTML = "<p>Sem horários disponíveis</p>";
-									}
-									document.getElementById("modal").style.display = "block";
-							});
-			}
-
-			function fecharModal() {
-					document.getElementById("modal").style.display = "none";
-			}
-	</script>
+</div>
 {% endblock calendar %}

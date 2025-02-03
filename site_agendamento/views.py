@@ -1,33 +1,65 @@
 from django.shortcuts import render, redirect
-from .models import User, Calendar
+from .models import User, Calendar, Appointment, Service
 from sqlite3 import IntegrityError
 from django.urls import reverse
-from django.utils import timezone
-from django.http import JsonResponse
+from datetime import datetime
 import calendar
-from django.utils.timezone import datetime
-
 
 # Create your views here.
+def services_view(request):
+    services = Service.objects.all()
+    return render(request, 'site_agendamento/services.html', {'services': services})
+
 def calendar_view(request):
-    # Obtém o mês e ano atuais
-    now = timezone.now()
-    ano = now.year
-    mes = now.month
+    """
+    Exibe um calendário com todos os dias do mês atual.
+    Ao clicar em um dia, mostra os horários disponíveis.
+    """
+    hoje = datetime.today()
+    ano, mes = hoje.year, hoje.month
     meses= ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+    # Pega o "nome" do mes, de acordo com o número do mes.['0': 'Janeiro', '1': 'Fevereiro']
     mes_atual = meses[mes -1]
-    # Obtém o primeiro e último dia do mês
-    _, ultimo_dia = calendar.monthrange(ano, mes)
+    # Quantidade de dias do mês.
+    total_dias_mes = calendar.monthrange(ano, mes)[1]
+    dias_mes = [datetime(ano, mes, dia).date() for dia in range(1, total_dias_mes + 1)]
+    calendario = []
+    # Obter os horários disponíveis para cada dia do mês
+    for dia in dias_mes:
+        horarios_disponiveis = Calendar.objects.filter(date=dia, is_available=True).values_list("time", flat=True)
+        calendario.append({"dia": dia, "horarios": horarios_disponiveis})
     
-    # Cria uma lista com todos os dias do mês
-    dias_do_mes = [
-        {
-            "dia": dia,
-            "data": f"{ano}-{mes:02d}-{dia:02d}",
-        }
-        for dia in range(1, ultimo_dia + 1)
-    ]
-    return render(request, 'site_agendamento/index.html', {"dias_do_mes": dias_do_mes, 'mes':mes_atual})
+
+    return render(request, 'site_agendamento/index.html', {"calendario": calendario, "mes": mes_atual, "ano": ano})
+
+
+def agendar_horario(request, data, horario):
+    """
+    Permite que um cliente selecione um horário disponível e agende um serviço.
+    """
+    data_obj = datetime.strptime(data, "%Y-%m-%d").date()
+    horario_obj = datetime.strptime(horario, "%H:%M").time()
+
+    # Verifica se o horário ainda está disponível
+    horario_disponivel = Calendar.objects.filter(date=data_obj, time=horario_obj, is_available=True).first()
+
+    if horario_disponivel:
+        if request.method == "POST":
+            user = User.objects.first()  # Troque por autenticação real
+            service = Service.objects.first()  # Exemplo: pegar o primeiro serviço disponível
+
+            # Criar agendamento
+            agendamento = Appointment.objects.create(
+                user=user, service=service, calendar=horario_disponivel, status="confirmado"
+            )
+
+            # Atualizar horário como indisponível
+            horario_disponivel.is_available = False
+            horario_disponivel.save()
+
+            return redirect("calendario")
+
+    return render(request, "erro.html", {"mensagem": "Horário indisponível."})
 
 
 def salvar_pessoa(request):
@@ -37,13 +69,13 @@ def salvar_pessoa(request):
         phone = request.POST.get("phone")
         user = User.objects.filter(phone=phone)
         if user:
-            return redirect(reverse('home') + f'?phone={phone}')
+            return redirect(reverse('services') + f'?phone={phone}')
         try:
             # Salvar no banco de dados
             User.objects.create(phone=phone)
             mensagem = 'Cadastro realizado com sucesso'
             color = 'green'
-            return redirect(reverse('home') + f'?phone={phone}')
+            return redirect(reverse('service') + f'?phone={phone}')
         except IntegrityError as Error_IntegrityError:
             mensagem = f'Error: {Error_IntegrityError}'
             color = 'red'
@@ -52,33 +84,3 @@ def salvar_pessoa(request):
             color = 'red'
     return render(request, 'site_agendamento/login.html', context={'mensagem': mensagem, 'color': color})
 
-
-
-def horarios_disponiveis(request, data):
-    """
-    Retorna os horários disponíveis para uma determinada data.
-    """
-    try:
-        # Converte a string da URL para um formato de data válido
-        data_formatada = datetime.strptime(data, "%Y-%m-%d").date()
-
-        # Filtrar horários disponíveis para essa data
-        horarios = Calendar.objects.filter(date=data_formatada, is_available=True).values_list("time", flat=True)
-
-        return JsonResponse({"horarios": list(horarios)})
-    
-    except ValueError:
-        return JsonResponse({"error": "Formato de data inválido. Use YYYY-MM-DD."}, status=400)
-
-def filtrar_por_mes(request, ano, mes):
-    """
-    Filtra e retorna os dias disponíveis de um determinado mês.
-    """
-    try:
-        # Filtrar todos os dias disponíveis no mês
-        dias_disponiveis = Calendar.objects.filter(date__year=ano, date__month=mes).values_list("date", flat=True).distinct()
-
-        return JsonResponse({"dias_disponiveis": list(dias_disponiveis)})
-    
-    except ValueError:
-        return JsonResponse({"error": "Formato inválido de ano/mês."}, status=400)

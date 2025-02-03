@@ -1,0 +1,35 @@
+{% extends "global/partials/base.html" %}
+{% load static %}
+
+{% block css-services %}
+		<link rel="stylesheet" href="{% static "global/css/services.css" %}">
+{% endblock css-services %}
+
+{% comment %} Bloco do link para o CSS do Header{% endcomment %}
+{% block css-header %}
+		<link rel="stylesheet" href="{% static "global/css/header.css" %}">
+{% endblock css-header %}
+
+{% comment %} Inclui o Header {% endcomment %}
+{% block header %}
+		{% include "global/partials/header.html" %}
+{% endblock header %}
+
+{% block services %}
+<div class="container">
+	<h1>Serviços Disponíveis</h1>
+	{% for service in services %}
+			<div class="service">
+					<img src="{{ service.image.url }}" alt="{{ service.name }}">
+					<div class="service-details">
+							<h2>{{ service.name }}</h2>
+							<p>{{ service.description }}</p>
+							<p class="price">Preço: R$ {{ service.price }}</p>
+							<p>Duração: {{ service.duration }} minutos</p>
+					</div>
+			</div>
+	{% empty %}
+			<p>Nenhum serviço disponível no momento.</p>
+	{% endfor %}
+</div>
+{% endblock services %}
