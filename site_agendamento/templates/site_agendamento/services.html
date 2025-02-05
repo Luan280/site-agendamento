@@ -15,6 +15,10 @@
 		{% include "global/partials/header.html" %}
 {% endblock header %}
 
+{% block mensagem %}
+	{{telephone}}
+{% endblock mensagem %}
+
 {% block services %}
 <div class="container">
 	<h1>Serviços Disponíveis</h1>
@@ -22,7 +26,7 @@
 			<div class="service">
 					<img src="{{ service.image.url }}" alt="{{ service.name }}">
 					<div class="service-details">
-							<h2>{{ service.name }}</h2>
+							<a href="{% url "home" telephone service.id%} "><h2>{{ service.name }}</h2></a>
 							<p>{{ service.description }}</p>
 							<p class="price">Preço: R$ {{ service.price }}</p>
 							<p>Duração: {{ service.duration }} minutos</p>

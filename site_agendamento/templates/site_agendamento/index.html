@@ -42,7 +42,7 @@
 							<ul>
 									{% for horario in item.horarios %}
 											
-											<a class="horario" href="{% url 'agendar_horario' item.dia horario|time:'H:i' %}">
+											<a class="horario" href="{% url 'agendar_horario' telephone service_id item.dia horario|time:'H:i' %}">
 													{{ horario|time:"H:i" }}
 											</a>
 											

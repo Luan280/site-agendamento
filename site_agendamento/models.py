@@ -1,16 +1,17 @@
 from django.db import models
 from django.utils import timezone
 
+
 class User(models.Model):
     name = models.CharField(max_length=50, blank=True)
-    phone = models.CharField(max_length=11, unique=True)
+    phone = models.CharField(max_length=15, unique=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.phone
 
 
-class Service(models.Model):
+class Services(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='services/', blank=True)
     description = models.TextField(blank=True, null=True)
@@ -22,9 +23,6 @@ class Service(models.Model):
         return self.name
 
 
-from django.db import models
-from django.utils import timezone
-
 class Calendar(models.Model):
     """
     Modelo de calendário que armazena todos os dias e horários de um ano, 
@@ -32,15 +30,16 @@ class Calendar(models.Model):
     """
     date = models.DateField()  # Guarda o dia do calendário (ex: 2025-02-01)
     time = models.TimeField()  # Guarda o horário disponível (ex: 10:00, 11:00)
-    is_available = models.BooleanField(default=True)  # Define se o horário está disponível
+    # Define se o horário está disponível
+    is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('date', 'time')  # Garante que não haja horários duplicados para o mesmo dia
+        # Garante que não haja horários duplicados para o mesmo dia
+        unique_together = ('date', 'time')
 
     def __str__(self):
         return f"{self.date.strftime('%d/%m/%Y')} - {self.time.strftime('%H:%M')}"
-
 
 
 class Appointment(models.Model):
@@ -51,9 +50,10 @@ class Appointment(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service = models.ForeignKey(Services, on_delete=models.CASCADE)
     calendar = models.OneToOneField(Calendar, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, default='pendente')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -86,7 +86,8 @@ class Payment(models.Model):
     appointment = models.OneToOneField(Appointment, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, default='pendente')
     transaction_id = models.CharField(max_length=255, blank=True, null=True)
     paid_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

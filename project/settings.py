@@ -78,8 +78,15 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'site_agendamento',
+        'USER': 'root',
+        'PASSWORD': '@Luan280',
+        'HOST': 'localhost',  # Ou o IP do servidor MySQL
+        'PORT': '3306',  # Porta padrão do MySQL
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
 }
 
