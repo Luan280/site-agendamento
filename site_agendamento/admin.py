@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import User, Services, Calendar, Appointment, Payment
+from .models import User, Service, Calendar, Appointment, Payment
 from site_agendamento import models
 
 admin.site.register(User)
-admin.site.register(Services)
+admin.site.register(Service)
 
 admin.site.register(Appointment)
 admin.site.register(Payment)

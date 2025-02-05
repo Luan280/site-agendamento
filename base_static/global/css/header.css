@@ -5,7 +5,12 @@ header {
     padding: 20px 10px;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    
+    width: 99%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease-in-out; /* Transição suave */
+    z-index: 1000; /* Para manter acima de outros elementos */
 }
 
 /* Estilo do título principal */
@@ -32,7 +37,7 @@ header nav ul li a {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    padding: 5px 10px;
+    padding: 10px 10px;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -41,6 +46,12 @@ header nav ul li a:hover {
     color: black;
     border-radius: 5px;
 }
+
+header nav a.active {
+    color: #FFD700; /* Cor do link ativo */
+    border-bottom: 2px solid #FFD700; /* Linha embaixo do link ativo */
+}
+
 #logo-header{
     justify-content: left;
     height: 20px;

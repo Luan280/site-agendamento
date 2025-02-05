@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #f4f4f4;
+    padding: 100px 100px;
 }
 .container {
     max-width: 600px;

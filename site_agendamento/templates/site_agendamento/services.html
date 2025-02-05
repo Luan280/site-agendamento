@@ -16,24 +16,39 @@
 {% endblock header %}
 
 {% block mensagem %}
-	{{telephone}}
+		{% if user.name == '' %}
+				<h1>Seja bem vindo!</h1>
+		{% endif %}
+
+		{% if user.name%}
+				<h1>Seja bem vinda(o), {{user.name}}!</h1>
+		{% endif %}
 {% endblock mensagem %}
 
 {% block services %}
-<div class="container">
-	<h1>Serviços Disponíveis</h1>
+  <!-- Filtro de categorias -->
+<form method="GET">
+	<select name="category" onchange="this.form.submit()">
+			<option value="">Todas as categorias</option>
+			<option value="cilios" {% if category == 'cilios' %}selected{% endif %}>Cílios</option>
+			<option value="unha" {% if category == 'unha' %}selected{% endif %}>Unha</option>
+			<option value="limpeza_pele" {% if category == 'limpeza_pele' %}selected{% endif %}>Limpeza de Pele</option>
+			<option value="sobrancelha" {% if category == 'sobrancelha' %}selected{% endif %}>Sobrancelha</option>
+	</select>
+</form>
+
+<!-- Exibição dos serviços filtrados -->
+<div class="services-list">
 	{% for service in services %}
-			<div class="service">
+			<div class="service-item">
 					<img src="{{ service.image.url }}" alt="{{ service.name }}">
-					<div class="service-details">
-							<a href="{% url "home" telephone service.id%} "><h2>{{ service.name }}</h2></a>
-							<p>{{ service.description }}</p>
-							<p class="price">Preço: R$ {{ service.price }}</p>
-							<p>Duração: {{ service.duration }} minutos</p>
-					</div>
+					<h3>{{ service.name }}</h3>
+					<p>{{ service.description }}</p>
+					<p><strong>Preço:</strong> R$ {{ service.price }}</p>
+					<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
+					<!-- Link para abrir os detalhes (Modal) -->
+					<a href="{% url 'service_detail' service.id %}">Ver detalhes</a>
 			</div>
-	{% empty %}
-			<p>Nenhum serviço disponível no momento.</p>
 	{% endfor %}
 </div>
 {% endblock services %}

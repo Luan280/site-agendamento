@@ -1,0 +1,18 @@
+{% extends "global/partials/base.html" %}
+{% load static %}
+
+{% comment %} Bloco do link para o CSS do Index{% endcomment %}
+{% block css-index %}
+		<link rel="stylesheet" href="{% static "global/css/about.css" %}">
+{% endblock css-index %}
+
+{% comment %} Bloco do link para o CSS do Header{% endcomment %}
+{% block css-header %}
+		<link rel="stylesheet" href="{% static "global/css/header.css" %}">
+{% endblock css-header %}
+
+
+{% comment %} Inclui o Header {% endcomment %}
+{% block header %}
+		{% include "global/partials/header.html" %}
+{% endblock header %}

@@ -1,49 +1,54 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-}
-.container {
-    max-width: 900px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-h1 {
     text-align: center;
-    color: #333;
+    justify-content: center;
+    background-color: #f4f4f4;
+    padding: 100px 100px;
 }
-.service {
+.services-list {
     display: flex;
-    align-items: center;
-    background: #fff;
-    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.service-item {
+    border: 1px solid #ccc;
     padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: center;
 }
-.service img {
-    width: 120px;
-    height: 120px;
-    border-radius: 8px;
-    object-fit: cover;
-    margin-right: 15px;
+
+.service-item img {
+    width: 100%;
+    height: auto;
 }
-.service-details {
-    flex: 1;
+
+.service-item h3 {
+    font-size: 18px;
+    margin-top: 10px;
 }
-.service h2 {
-    margin: 0;
-    color: #333;
+
+.service-item p {
+    font-size: 14px;
+    margin-top: 5px;
 }
-.service p {
-    margin: 5px 0;
-    color: #555;
+
+/* Estilos para os detalhes do serviço */
+.service-detail {
+    padding: 20px;
+    text-align: center;
 }
-.service .price {
-    font-weight: bold;
-    color: #27ae60;
+
+.service-detail img {
+    width: 100%;
+    height: auto;
+}
+
+.service-detail h2 {
+    font-size: 24px;
+}
+
+.service-detail p {
+    font-size: 18px;
+    margin-top: 10px;
 }

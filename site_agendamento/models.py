@@ -11,12 +11,19 @@ class User(models.Model):
         return self.phone
 
 
-class Services(models.Model):
+class Service(models.Model):
+    CATEGORY_CHOICES = [
+        ('cilios', 'Cílios'),
+        ('unha', 'Unha'),
+        ('limpeza_pele', 'Limpeza de Pele'),
+        ('sobrancelha', 'Sobrancelha'),
+    ]
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='services/', blank=True)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.IntegerField(help_text="Duração em minutos")
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -50,7 +57,7 @@ class Appointment(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    service = models.ForeignKey(Services, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
     calendar = models.OneToOneField(Calendar, on_delete=models.CASCADE)
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default='pendente')
