@@ -4,7 +4,7 @@
 
 {% comment %} Bloco do link para o CSS do Index{% endcomment %}
 {% block css-index %}
-		<link rel="stylesheet" href="{% static "global/css/index.css" %}">
+		<link rel="stylesheet" href="{% static "global/css/payment.css" %}">
 {% endblock css-index %}
 
 {% comment %} Bloco do link para o CSS do Header{% endcomment %}
@@ -27,5 +27,21 @@
 {% endblock mensagem %}
 
 {% block payment %}
+<div class="container">
+	<h2>Confirme seu Pagamento</h2>
 
+	{% if mensagem %}
+			<p style="color: red;">{{ mensagem }}</p>
+	{% else %}
+			<p><strong>Serviço:</strong> {{ service.name }}</p>
+			<p><strong>Valor:</strong> R$ {{ service.price }}</p>
+			<p><strong>Data:</strong> {{ data }}</p>
+			<p><strong>Horário:</strong> {{ horario }}</p>
+
+			<form method="POST">
+					{% csrf_token %}
+					<button type="submit" class="btn">Confirmar Pagamento</button>
+			</form>
+	{% endif %}
+</div>
 {% endblock payment %}

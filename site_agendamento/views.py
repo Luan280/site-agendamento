@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import User, Calendar, Appointment, Service
 from sqlite3 import IntegrityError
-from django.urls import reverse
 from datetime import datetime
 import calendar
 
@@ -52,11 +51,6 @@ def services_view(request, telephone):
     return render(request, 'site_agendamento/services.html', context)
 
 
-def service_detail(request, service_id):
-    service = get_object_or_404(Service, id=service_id)
-    return render(request, 'site_agendamento/service_detail.html', {'service': service})
-
-
 def calendar_view(request, telephone, service_id):
     """
     Exibe um calendário com todos os dias do mês atual.
@@ -93,18 +87,19 @@ def agendar_horario(request, telephone, service_id, data, horario):
 
     # Verifica se o horário ainda está disponível
     horario_disponivel = Calendar.objects.filter(
-        date=data_obj, time=horario_obj, is_available=True).first()
+        date=data_obj, time=horario_obj, is_available=True
+    ).first()
 
     if horario_disponivel:
-        if request.method == "POST":
-            # Troque por autenticação real
-            user = User.objects.filter(phone=telephone)
-            # Exemplo: pegar o primeiro serviço disponível
-            service = Service.objects.filter(id=service_id)
+        service = get_object_or_404(Service, id=service_id)
+        user = User.objects.filter(phone=telephone).first()
 
-            # Criar agendamento
+        if request.method == "POST":
             agendamento = Appointment.objects.create(
-                user=user, service=service, calendar=horario_disponivel, status="confirmado"
+                user=user,
+                service=service,
+                calendar=horario_disponivel,
+                status="confirmado"
             )
 
             # Atualizar horário como indisponível
@@ -112,6 +107,16 @@ def agendar_horario(request, telephone, service_id, data, horario):
             horario_disponivel.save()
 
             return redirect("calendario")
+
+        return render(
+            request,
+            "site_agendamento/payment.html",
+            {
+                "service": service,
+                "data": data_obj,
+                "horario": horario_obj,
+            }
+        )
 
     return render(request, "site_agendamento/payment.html", {"mensagem": "Horário indisponível."})
 

@@ -16,13 +16,15 @@
 {% endblock header %}
 
 {% block mensagem %}
+	<div class="welcome-message">
 		{% if user.name == '' %}
 				<h1>Seja bem vindo!</h1>
 		{% endif %}
 
 		{% if user.name%}
-				<h1>Seja bem vinda(o), {{user.name}}!</h1>
+				<h1>Seja bem vinda(o) novamente, {{user.name}}!</h1>
 		{% endif %}
+	</div>
 {% endblock mensagem %}
 
 {% block services %}
@@ -47,7 +49,7 @@
 					<p><strong>Preço:</strong> R$ {{ service.price }}</p>
 					<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
 					<!-- Link para abrir os detalhes (Modal) -->
-					<a href="{% url 'service_detail' service.id %}">Ver detalhes</a>
+					<a href="{% url 'home' telephone service.id %}">Agendar horário</a>
 			</div>
 	{% endfor %}
 </div>
