@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import User, Calendar, Appointment, Service
 from sqlite3 import IntegrityError
 from datetime import datetime
+from django.http import HttpResponse
 import calendar
 
 # Create your views here.
@@ -72,53 +73,52 @@ def calendar_view(request, telephone, service_id):
         horarios_disponiveis = Calendar.objects.filter(
             date=dia, is_available=True).values_list("time", flat=True)
         calendario.append({"dia": dia, "horarios": horarios_disponiveis})
-    context = {'telephone': telephone, 'service_id': service_id,
-               "calendario": calendario, "mes": mes_atual, "ano": ano}
+    
+    service = Service.objects.get(id=service_id)
+
+    # Captura o tipo de serviço escolhido pelo cliente
+    service_type = request.GET.get('service_type', None)
+
+    # Exibe mensagem se o cliente ainda não escolheu o tipo de serviço
+    mensagem = None
+    if not service_type:
+        mensagem = "Por favor, selecione entre Aplicação ou Manutenção antes de continuar."
+
+    context = {
+        'mensagem': mensagem,
+        'telephone': telephone,
+        'service': service,
+        'calendario': calendario,
+        'mes': mes_atual, 'ano': ano,
+        'service_type': service_type # Passa o tipo de serviço para o template
+        }  
 
     return render(request, 'site_agendamento/index.html', context)
 
 
-def agendar_horario(request, telephone, service_id, data, horario):
-    """
-    Permite que um cliente selecione um horário disponível e agende um serviço.
-    """
-    data_obj = datetime.strptime(data, "%Y-%m-%d").date()
-    horario_obj = datetime.strptime(horario, "%H:%M").time()
+def agendar_horario(request, telephone, service_id):
+    service = get_object_or_404(Service, id=service_id)
 
-    # Verifica se o horário ainda está disponível
-    horario_disponivel = Calendar.objects.filter(
-        date=data_obj, time=horario_obj, is_available=True
-    ).first()
+    if request.method == 'POST':
+        service_type = request.POST.get('service_type')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
 
-    if horario_disponivel:
-        service = get_object_or_404(Service, id=service_id)
-        user = User.objects.filter(phone=telephone).first()
-
-        if request.method == "POST":
-            agendamento = Appointment.objects.create(
-                user=user,
+        if service_type and date and time:
+            # Cria o agendamento
+            Appointment.objects.create(
                 service=service,
-                calendar=horario_disponivel,
-                status="confirmado"
+                client=telephone,
+                date=date,
+                time=time,
+                service_type=service_type,
             )
+            return HttpResponse("Agendamento realizado com sucesso!")
+        else:
+            return HttpResponse("Preencha todos os campos corretamente!")
 
-            # Atualizar horário como indisponível
-            horario_disponivel.is_available = False
-            horario_disponivel.save()
-
-            return redirect("calendario")
-
-        return render(
-            request,
-            "site_agendamento/payment.html",
-            {
-                "service": service,
-                "data": data_obj,
-                "horario": horario_obj,
-            }
-        )
-
-    return render(request, "site_agendamento/payment.html", {"mensagem": "Horário indisponível."})
+    # Renderiza a página
+    return render(request, 'site_agendamento/payment.html', {'service': service})
 
 
 def about_view(request):

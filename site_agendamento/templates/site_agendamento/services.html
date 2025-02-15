@@ -46,11 +46,11 @@
 					<img src="{{ service.image.url }}" alt="{{ service.name }}">
 					<h3>{{ service.name }}</h3>
 					<p>{{ service.description }}</p>
-					<p><strong>Preço:</strong> R$ {{ service.price }}</p>
+					<p><strong>Aplicação:</strong> R$ {{ service.application }}</p>
+					<p><strong>Manutenção:</strong> R$ {{ service.maintenance }}</p>
 					<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
 					<!-- Link para abrir os detalhes (Modal) -->
 					<a href="{% url 'home' telephone service.id %}">Agendar horário</a>
 			</div>
 	{% endfor %}
-</div>
 {% endblock services %}

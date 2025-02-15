@@ -1,58 +1,75 @@
 {% extends "global/partials/base.html" %}
 {% load static %}
 
-
-{% comment %} Bloco do link para o CSS do Index{% endcomment %}
 {% block css-index %}
-		<link rel="stylesheet" href="{% static "global/css/index.css" %}">
+<link rel="stylesheet" href="{% static "global/css/index.css" %}">
 {% endblock css-index %}
 
-{% comment %} Bloco do link para o CSS do Header{% endcomment %}
 {% block css-header %}
-		<link rel="stylesheet" href="{% static "global/css/header.css" %}">
+<link rel="stylesheet" href="{% static "global/css/header.css" %}">
 {% endblock css-header %}
 
-
-
-{% comment %} Inclui o Header {% endcomment %}
 {% block header %}
-		{% include "global/partials/header.html" %}
+{% include "global/partials/header.html" %}
 {% endblock header %}
 
-{% comment %} Inclui o Header {% endcomment %}
 {% block mensagem %}
-		{% if mensagem %}   
-			{{ mensagem }}
-		{% endif %}
+{% if mensagem %}
+<div class="mensagem">{{ mensagem }}</div>
+{% endif %}
 {% endblock mensagem %}
 
-{% comment %} Inclui o Calendário no index {% endcomment %}
 {% block calendar %}
 <div class="container">
-	<h2>Calendário de Agendamentos - {{ mes }}/{{ ano }}</h2>
-
-	<div class="calendar">
-			{% for item in calendario %}
-					<div class="day" onclick="document.getElementById('modal-{{ item.dia }}').classList.add('active')">
-							{{ item.dia.day }}
+    <!-- Primeira caixa: Escolha entre Aplicação ou Manutenção -->
+    <div class="box">
+				<img src="{{ service.image.url }}" alt="{{ service.name }}">
+				<h3>{{ service.name }}</h3>
+				<p>{{ service.description }}</p>
+				<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
+        <form id="service-form" method="GET" action="{% url 'home' telephone service.id %}">
+					<h2>Escolha o tipo de serviço:</h2>
+					<div class="checkbox-group">
+							<label>
+									<input type="radio" name="service_type" value="aplicacao" 
+											{% if service_type == "aplicacao" %}checked{% endif %}>
+									Aplicação (R$ {{ service.application }})
+							</label>
+							<label>
+									<input type="radio" name="service_type" value="manutencao" 
+											{% if service_type == "manutencao" %}checked{% endif %}>
+									Manutenção (R$ {{ service.maintenance }})
+							</label>
 					</div>
+					<button type="submit" class="submit-btn">Selecionar</button>
+			</form>
+    </div>
 
-					<div id="modal-{{ item.dia }}" class="modal">
-							<h3>Escolha um horário - {{ item.dia|date:"d/m/Y" }}</h3>
-							<ul>
-									{% for horario in item.horarios %}
-											
-											<a class="horario" href="{% url 'agendar_horario' telephone service_id item.dia horario|time:'H:i' %}">
-													{{ horario|time:"H:i" }}
-											</a>
-											
-									{% empty %}
-											<li>Sem horários disponíveis</li>
-									{% endfor %}
-							</ul>
-							<button class="close" onclick="document.getElementById('modal-{{ item.dia }}').classList.remove('active')">Fechar</button>
-					</div>
-			{% endfor %}
-	</div>
+    <!-- Segunda caixa: Seleção do calendário -->
+    <div class="box">
+        <h2>Calendário de Agendamentos - {{ mes }}/{{ ano }}</h2>
+        <div class="calendar">
+            {% for item in calendario %}
+            <div class="day" onclick="document.getElementById('modal-{{ item.dia }}').classList.add('active')">
+                {{ item.dia.day }}
+            </div>
+
+            <!-- Modal para selecionar horários -->
+            <div id="modal-{{ item.dia }}" class="modal">
+                <h3>Escolha um horário - {{ item.dia|date:"d/m/Y" }}</h3>
+                <ul>
+                    {% for horario in item.horarios %}
+                    <a class="horario" href="{% url 'agendar_horario' telephone service.id item.dia horario|time:'H:i' %}">
+                        {{ horario|time:"H:i" }}
+                    </a>
+                    {% empty %}
+                    <li>Sem horários disponíveis</li>
+                    {% endfor %}
+                </ul>
+                <button class="close" onclick="document.getElementById('modal-{{ item.dia }}').classList.remove('active')">Fechar</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock calendar %}
