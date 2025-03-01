@@ -1,10 +1,16 @@
+/* Reset básico para remover margens e preenchimentos padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo da página */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #fff0f5; /* Fundo delicado rosado */
-    padding: 50px 20px;
     color: #444;
-    padding: 100px 100px;
 }
 
 .container {
@@ -13,6 +19,57 @@ body {
     margin: 20px auto;
     max-width: 1200px;
     flex-wrap: wrap; /* Para ajustar em telas menores */
+    align-items: center;
+    justify-content: center;
+
+}
+
+/* Mensagem de seleção */
+.selection-message {
+    background-color: #ff6b81;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        flex-direction: column; /* Empilhar elementos no celular */
+    }
+
+    .box {
+        width: 100%; /* Ocupa toda a largura da tela */
+    }
+
+    .day {
+        width: 60px;
+        height: 60px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .selection-message {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .day {
+        width: 50px;
+        height: 50px;
+        font-size: 12px;
+    }
 }
 
 .box {

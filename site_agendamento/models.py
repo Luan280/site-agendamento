@@ -56,17 +56,21 @@ class Appointment(models.Model):
         ('confirmado', 'Confirmado'),
         ('cancelado', 'Cancelado'),
     ]
+    TYPE_CHOICES = [
+        ('aplicação', 'Aplicação'),
+        ('manutenção', 'Manutenção'),
+    ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     calendar = models.OneToOneField(Calendar, on_delete=models.CASCADE)
-    status = models.CharField(
-        max_length=10, choices=STATUS_CHOICES, default='pendente')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
+    type_service = models.CharField(max_length=10, choices=TYPE_CHOICES, default='aplicação')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        """ Atualiza a disponibilidade do horário no calendário ao confirmar um agendamento. """
+        """ Atualiza a disponibilidade do horário no calendário ao confirmar um agendamento."""
         if self.status == 'confirmado':
             self.calendar.is_available = False
             self.calendar.save()

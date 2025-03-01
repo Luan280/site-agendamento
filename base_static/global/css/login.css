@@ -1,18 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Tangerine:wght@700&display=swap');
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 10px;
-    background-color: #f0f0f0;
-    background: linear-gradient(#ff92a5,#ffb5c2, #ffc0cb);
+    margin: 0;
+    background: linear-gradient(#ff92a5, #ffb5c2, #ffc0cb);
     color: white;
+    font-family: 'Poppins', sans-serif; /* Nova fonte padrão */
 }
+
+/* Centraliza o conteúdo */
 .main-login {
     text-align: center;
 }
 
-.main-login h1{
+/* Mantendo o H1 com a fonte Tangerine */
+.main-login h1 {
     font-family: "Tangerine", serif;
     font-weight: 700;
     font-style: normal;
@@ -20,64 +25,88 @@ body {
     font-size: 50px;
 }
 
+/* Container da tela de login */
 .login-container {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     width: 400px;
-    margin-left: 10;
-}
-.login-container h3 {
-    margin: 0 0 20px;
     text-align: left;
-    color: black;
 }
+
+/* Ajuste no título do formulário */
+.login-container h3 {
+    margin: 0 0 0px;
+    font-size: 18px;
+    color: black;
+    font-weight: 600;
+}
+
+/* Estilização dos inputs */
 .form-group {
     margin-bottom: 15px;
-    
 }
 
 .form-group label {
     display: block;
     margin-bottom: 5px;
     font-size: 14px;
+    font-weight: 400;
 }
 
 .form-group input {
-    width: 95%;
+    width: 94%;
     padding: 12px 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 6px;
     transition: all 0.3s ease-in-out;
     font-size: 14px;
+    font-family: 'Poppins', sans-serif;
 }
 
+/* Efeitos ao passar o mouse e ao focar no input */
 .form-group input:hover {
-    border-color: #007bff;
-    background-color: #e6f0ff;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+    border-color: #ff6b81;
+    background-color: #ffe3e9;
+    box-shadow: 0 0 5px rgba(255, 107, 129, 0.4);
 }
 
 .form-group input:focus {
-    border-color: #007bff;
-    background-color: #dceeff;
+    border-color: #ff6b81;
+    background-color: #ffd7de;
     outline: none;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+    box-shadow: 0 0 5px rgba(255, 107, 129, 0.5);
     
 }
 
+/* Botão de login */
 .btn {
     width: 100%;
-    padding: 10px;
-    background-color: #ffb2c0;
+    padding: 12px;
+    background-color: #ff6b81;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     font-size: 16px;
     cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease-in-out, transform 0.2s;
 }
 
 .btn:hover {
-    background-color: #d495a1;
+    background-color: #ffb2c0;
+    transform: scale(1.03);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .main-login h1 {
+        font-size: 40px;
+    }
 }

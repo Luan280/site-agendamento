@@ -15,7 +15,7 @@
 
 {% block mensagem %}
 {% if mensagem %}
-<div class="mensagem">{{ mensagem }}</div>
+<div class="selection-message">{{ mensagem }}</div>
 {% endif %}
 {% endblock mensagem %}
 
@@ -28,21 +28,22 @@
 				<p>{{ service.description }}</p>
 				<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
         <form id="service-form" method="GET" action="{% url 'home' telephone service.id %}">
-					<h2>Escolha o tipo de serviço:</h2>
-					<div class="checkbox-group">
-							<label>
-									<input type="radio" name="service_type" value="aplicacao" 
-											{% if service_type == "aplicacao" %}checked{% endif %}>
-									Aplicação (R$ {{ service.application }})
-							</label>
-							<label>
-									<input type="radio" name="service_type" value="manutencao" 
-											{% if service_type == "manutencao" %}checked{% endif %}>
-									Manutenção (R$ {{ service.maintenance }})
-							</label>
-					</div>
-					<button type="submit" class="submit-btn">Selecionar</button>
-			</form>
+            <h2>Escolha o tipo de serviço:</h2>
+            <div class="checkbox-group">
+                <label>
+                    <input type="radio" name="service_type" value="aplicacao" 
+                        {% if service_type == "aplicacao" %}checked{% endif %}
+                        onchange="this.form.submit()">
+                    Aplicação (R$ {{ service.application }})
+                </label>
+                <label>
+                    <input type="radio" name="service_type" value="manutencao" 
+                        {% if service_type == "manutencao" %}checked{% endif %}
+                        onchange="this.form.submit()">
+                    Manutenção (R$ {{ service.maintenance }})
+                </label>
+            </div>
+        </form>    
     </div>
 
     <!-- Segunda caixa: Seleção do calendário -->

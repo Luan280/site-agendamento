@@ -1,11 +1,16 @@
-/* Estilo geral */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #fff0f5; /* Fundo delicado rosado */
-    color: #333;
+/* Reset básico para remover margens e preenchimentos padrão */
+* {
     margin: 0;
-    
-    padding: 100px 100px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo da página */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #fff0f5; /* Fundo delicado rosado */
+    color: #444;
 }
 
 /* Estilo para a mensagem de boas-vindas */
@@ -18,15 +23,10 @@ body {
     font-weight: bold;
     border-radius: 0 0 15px 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 95%;
+    
     position: relative; /* Alterado de 'fixed' para 'relative' */
     
 }
-
-/* Ajustando o espaçamento do header para evitar sobreposição */
-/* header {
-    margin-top: 60px; /* Garante que o header fique abaixo da mensagem */
-
 
 /* Efeito de fade-in ao carregar */
 @keyframes fadeIn {
@@ -41,7 +41,7 @@ body {
 }
 
 .welcome-message {
-    animation: fadeIn 0.8s ease-in-out;
+    animation: fadeIn 1.0s ease-in-out;
 }
 
 
@@ -126,11 +126,11 @@ select:hover {
 /* Responsividade */
 @media (max-width: 768px) {
     .services-list {
-        flex-direction: column;
+        flex:auto;
         align-items: center;
     }
 
     .service-item {
-        width: 90%;
+        width: 47%;
     }
 }

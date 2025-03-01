@@ -1,60 +1,97 @@
-/* Estilo do header */
+/* Importando a fonte Tangerine do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap');
+
+
+/* Estilização do Header */
 header {
-    height: 7%;
-    background-color: #ffb2c0;
-    color: white;
-    padding: 20px 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 99%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    transition: all 0.3s ease-in-out; /* Transição suave */
-    z-index: 1000; /* Para manter acima de outros elementos */
-}
-
-/* Estilo do título principal */
-header h1 {
-    margin: 0;
-    font-size: 2em;
-    margin-top: 0px;
-}
-
-header nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    position: relative; /* Agora o header não rola junto com a tela */
+    width: 100%;
+    background-color: rgba(255, 178, 192, 0.9); /* Fundo rosado suave */
     display: flex;
-    justify-content: right;
-    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
-header nav ul li {
+/* Logo */
+#logo-header img {
+    height: 60px;
+    max-width: 150px;
+}
+
+/* Título com fonte personalizada */
+header h1 {
+    font-family: 'Tangerine', cursive;
+    font-size: 38px; /* Tamanho aumentado para destacar */
+    color: white;
+    font-weight: bold;
+    text-transform: none;
+}
+
+/* Navegação */
+nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+nav ul li {
     display: inline;
 }
 
-header nav ul li a {
-    color: white;
+nav ul li a {
     text-decoration: none;
+    color: white;
+    font-size: 18px;
     font-weight: bold;
-    padding: 10px 10px;
-    transition: background-color 0.3s, color 0.3s;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-header nav ul li a:hover {
-    background-color: white;
-    color: black;
-    border-radius: 5px;
+/* Correção para garantir que o "Contato" apareça */
+nav ul li:last-child {
+    margin-right: 0;
 }
 
-header nav a.active {
-    color: #FFD700; /* Cor do link ativo */
-    border-bottom: 2px solid #FFD700; /* Linha embaixo do link ativo */
+nav ul li a:hover {
+    background-color: #ff6b81;
+    color: white;
 }
 
-#logo-header{
-    justify-content: left;
-    height: 20px;
-    width: 20px;
+/* Responsividade */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 20px;
+        text-align: center;
+    }
+
+    #logo-header img {
+        height: 50px;
+    }
+
+    header h1 {
+        font-size: 34px; /* Ajuste no tamanho da fonte para mobile */
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+
+    nav ul li a {
+        font-size: 16px;
+        padding: 10px;
+        display: block;
+        width: 100%;
+    }
 }
