@@ -13,13 +13,12 @@
 {% include "global/partials/header.html" %}
 {% endblock header %}
 
-{% block mensagem %}
+{% block calendar %}
+
 {% if mensagem %}
 <div class="selection-message">{{ mensagem }}</div>
 {% endif %}
-{% endblock mensagem %}
 
-{% block calendar %}
 <div class="container">
     <!-- Primeira caixa: Escolha entre Aplicação ou Manutenção -->
     <div class="box">
@@ -27,34 +26,66 @@
 				<h3>{{ service.name }}</h3>
 				<p>{{ service.description }}</p>
 				<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
-        <form id="service-form" method="GET" action="{% url 'home' telephone service.id %}">
-            <h2>Escolha o tipo de serviço:</h2>
-            <div class="checkbox-group">
-                <label>
-                    <input type="radio" name="service_type" value="aplicacao" 
-                        {% if service_type == "aplicacao" %}checked{% endif %}
-                        onchange="this.form.submit()">
-                    Aplicação (R$ {{ service.application }})
-                </label>
-                <label>
-                    <input type="radio" name="service_type" value="manutencao" 
-                        {% if service_type == "manutencao" %}checked{% endif %}
-                        onchange="this.form.submit()">
-                    Manutenção (R$ {{ service.maintenance }})
-                </label>
+        {% if not service.maintenance == None %}   
+        <div class="checkbox-group">
+            <form id="service-form" method="GET" action="{% url 'home' telephone service.id %}">
+                <h2>Escolha o tipo de serviço:</h2>
+                    <label>
+                        <input type="radio" name="service_type" value="manutencao" 
+                            {% if service_type == "manutencao" %}checked{% endif %}
+                            onchange="this.form.submit()">
+                        Manutenção: R$ {{ service.maintenance }}
+                    </label>
+                    <label>
+                        <input type="radio" name="service_type" value="aplicacao" 
+                            {% if service_type == "aplicacao" %}checked{% endif %}
+                            onchange="this.form.submit()">
+                        Aplicação: R$ {{ service.application }}
+                    </label>
+                </div>
             </div>
-        </form>    
-    </div>
+        {% else %}
+        <div class="checkbox-group">
+            <form id="service-form" method="GET" action="{% url 'home' telephone service.id %}">
+                <h2>Tipo de serviço:</h2>
+                    <label>
+                        <input type="radio" name="service_type" value="aplicacao" 
+                            {% if service_type == "aplicacao" %}checked{% endif %}
+                            onchange="this.form.submit()">
+                        Aplicação: R$ {{ service.application }}
+                    </label>
+                </div>
+            </form>   
+</div>
+        {% endif %}
+           
 
     <!-- Segunda caixa: Seleção do calendário -->
     <div class="box">
         <h2>Calendário de Agendamentos - {{ mes }}/{{ ano }}</h2>
+    
+        <!-- Linha dos dias da semana -->
+        <div class="weekdays">
+            <div>Dom</div>
+            <div>Seg</div>
+            <div>Ter</div>
+            <div>Qua</div>
+            <div>Qui</div>
+            <div>Sex</div>
+            <div>Sáb</div>
+        </div>
+    
+        <!-- Linha dos dias do mês -->
         <div class="calendar">
+            {% for _ in empty_slots %}
+            <div class="empty"></div>
+            {% endfor %}
+            
             {% for item in calendario %}
             <div class="day" onclick="document.getElementById('modal-{{ item.dia }}').classList.add('active')">
                 {{ item.dia.day }}
             </div>
-
+        
             <!-- Modal para selecionar horários -->
             <div id="modal-{{ item.dia }}" class="modal">
                 <h3>Escolha um horário - {{ item.dia|date:"d/m/Y" }}</h3>
@@ -71,6 +102,6 @@
             </div>
             {% endfor %}
         </div>
-    </div>
+    </div>    
 </div>
 {% endblock calendar %}

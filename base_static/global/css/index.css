@@ -1,12 +1,12 @@
-/* Reset básico para remover margens e preenchimentos padrão */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 /* Corpo da página */
 body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; 
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #fff0f5; /* Fundo delicado rosado */
@@ -113,6 +113,28 @@ body {
     justify-content: center;
     margin-top: 20px;
 }
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #ff6b81; /* Rosa vibrante */
+    margin-bottom: 10px;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 colunas para os dias da semana */
+    gap: 10px;
+    text-align: center;
+}
+
+.empty {
+    visibility: hidden; /* Oculta os espaços sem quebrar o layout */
+}
+
 
 .day {
     width: 70px;

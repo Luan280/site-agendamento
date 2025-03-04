@@ -4,13 +4,14 @@
 
 /* Estilização do Header */
 header {
-    position: relative; /* Agora o header não rola junto com a tela */
+    position: absolute; /* Agora o header não rola junto com a tela */
+    top: 0;
     width: 100%;
     background-color: rgba(255, 178, 192, 0.9); /* Fundo rosado suave */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 30px;
+    padding: 15px 25px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
@@ -23,11 +24,14 @@ header {
 
 /* Título com fonte personalizada */
 header h1 {
+    position: absolute;
     font-family: 'Tangerine', cursive;
     font-size: 38px; /* Tamanho aumentado para destacar */
     color: white;
     font-weight: bold;
     text-transform: none;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Navegação */

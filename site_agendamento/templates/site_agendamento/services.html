@@ -2,55 +2,53 @@
 {% load static %}
 
 {% block css-services %}
-		<link rel="stylesheet" href="{% static "global/css/services.css" %}">
+    <link rel="stylesheet" href="{% static "global/css/services.css" %}">
 {% endblock css-services %}
 
-{% comment %} Bloco do link para o CSS do Header{% endcomment %}
 {% block css-header %}
-		<link rel="stylesheet" href="{% static "global/css/header.css" %}">
+    <link rel="stylesheet" href="{% static "global/css/header.css" %}">
 {% endblock css-header %}
 
-{% comment %} Inclui o Header {% endcomment %}
 {% block header %}
-		{% include "global/partials/header.html" %}
+    {% include "global/partials/header.html" %}
 {% endblock header %}
 
-{% block mensagem %}
-	<div class="welcome-message">
-		{% if user.name == '' %}
-				<h1>Seja bem vindo!</h1>
-		{% endif %}
+{% block content %}
+    <div class="container">
+        <!-- Mensagem de boas-vindas -->
+        <div class="welcome-message">
+            {% if user.name == '' %}
+                <h1>Seja bem-vindo!</h1>
+            {% else %}
+                <h1>Seja bem-vinda(o) novamente, {{ user.name }}!</h1>
+            {% endif %}
+        </div>
 
-		{% if user.name%}
-				<h1>Seja bem vinda(o) novamente, {{user.name}}!</h1>
-		{% endif %}
-	</div>
-{% endblock mensagem %}
+        <!-- Filtro de categorias -->
+        <form method="GET" class="category-filter">
+            <select name="category" onchange="this.form.submit()">
+                <option value="">Todas as categorias</option>
+                <option value="cilios" {% if category == 'cilios' %}selected{% endif %}>Cílios</option>
+                <option value="unha" {% if category == 'unha' %}selected{% endif %}>Unha</option>
+                <option value="limpeza_pele" {% if category == 'limpeza_pele' %}selected{% endif %}>Limpeza de Pele</option>
+                <option value="sobrancelha" {% if category == 'sobrancelha' %}selected{% endif %}>Sobrancelha</option>
+            </select>
+        </form>
 
-{% block services %}
-  <!-- Filtro de categorias -->
-<form method="GET">
-	<select name="category" onchange="this.form.submit()">
-			<option value="">Todas as categorias</option>
-			<option value="cilios" {% if category == 'cilios' %}selected{% endif %}>Cílios</option>
-			<option value="unha" {% if category == 'unha' %}selected{% endif %}>Unha</option>
-			<option value="limpeza_pele" {% if category == 'limpeza_pele' %}selected{% endif %}>Limpeza de Pele</option>
-			<option value="sobrancelha" {% if category == 'sobrancelha' %}selected{% endif %}>Sobrancelha</option>
-	</select>
-</form>
-
-<!-- Exibição dos serviços filtrados -->
-<div class="services-list">
-	{% for service in services %}
-			<div class="service-item">
-					<img src="{{ service.image.url }}" alt="{{ service.name }}">
-					<h3>{{ service.name }}</h3>
-					<p>{{ service.description }}</p>
-					<p><strong>Aplicação:</strong> R$ {{ service.application }}</p>
-					<p><strong>Manutenção:</strong> R$ {{ service.maintenance }}</p>
-					<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
-					<!-- Link para abrir os detalhes (Modal) -->
-					<a href="{% url 'home' telephone service.id %}">Agendar horário</a>
-			</div>
-	{% endfor %}
-{% endblock services %}
+        <!-- Exibição dos serviços filtrados -->
+        <div class="services-list">
+            {% for service in services %}
+                <div class="service-item">
+                    <img src="{{ service.image.url }}" alt="{{ service.name }}">
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.description }}</p>
+                    <p><strong>Aplicação:</strong> R$ {{ service.application }}</p>
+                    <p><strong>Manutenção:</strong> R$ {{ service.maintenance }}</p>
+                    <p><strong>Duração:</strong> {{ service.duration }} minutos</p>
+                    <!-- Link para agendar horário -->
+                    <a href="{% url 'home' telephone service.id %}">Agendar horário</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

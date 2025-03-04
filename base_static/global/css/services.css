@@ -1,31 +1,24 @@
-/* Reset básico para remover margens e preenchimentos padrão */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 /* Corpo da página */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #fff0f5; /* Fundo delicado rosado */
+    background-color: #fff0f5;
     color: #444;
+    margin: 0;
+    padding-top: 80px; /* Garante espaço para o header fixo */
 }
 
-/* Estilo para a mensagem de boas-vindas */
+/* Ajuste para a mensagem de boas-vindas */
 .welcome-message {
     background: linear-gradient(to right, #ffb2c0, #ff6b81);
     color: white;
     text-align: center;
-    padding: 15px;
-    font-size: 15px;
+    padding: 4px;
+    font-size: 12px;
     font-weight: bold;
     border-radius: 0 0 15px 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    
-    position: relative; /* Alterado de 'fixed' para 'relative' */
-    
+    margin-top: 10px;
 }
 
 /* Efeito de fade-in ao carregar */
