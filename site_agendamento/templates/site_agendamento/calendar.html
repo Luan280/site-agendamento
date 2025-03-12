@@ -91,7 +91,7 @@
                 <h3>Escolha um horário - {{ item.dia|date:"d/m/Y" }}</h3>
                 <ul>
                     {% for horario in item.horarios %}
-                    <a class="horario" href="{% url 'agendar_horario' telephone service.id item.dia horario|time:'H:i' %}">
+                    <a class="horario" href="{% url 'agendar_horario' service_type service.id item.dia horario|time:'H:i' %}">
                         {{ horario|time:"H:i" }}
                     </a>
                     {% empty %}

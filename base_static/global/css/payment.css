@@ -1,34 +1,204 @@
+/* Corpo da página */
 body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; 
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
     text-align: center;
-    margin: 50px;
-    padding: 100px 100px;
+    background-color: #fff0f5; /* Fundo delicado rosado */
+    color: #444;
 }
+
 .container {
+    display: flex;
+    gap: 20px; /* Espaçamento entre as caixas */
+    margin: 20px auto;
+    max-width: 1200px;
+    flex-wrap: wrap; /* Para ajustar em telas menores */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilização das Caixas */
+.box {
+    flex: 1; /* Faz as caixas ocuparem o mesmo espaço */
+    background-color: #ffffff;
+    border: 1px solid #ffb2c0; /* Bordas suaves rosadas */
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box:hover {
+    transform: scale(1.02); /* Pequeno zoom ao passar o mouse */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilização do Resumo do Serviço */
+.box img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.box h2, .box h3 {
+    font-size: 24px;
+    color: #ff6b81; /* Título com um rosa mais vibrante */
+    margin-bottom: 10px;
+}
+
+.box p {
+    font-size: 16px;
+    color: #555; /* Texto suave */
+    margin-top: 5px;
+}
+
+/* Estilização dos Campos de Entrada */
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ffb2c0;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    transition: 0.3s ease-in-out;
+    background-color: #fffafc;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #ff6b81;
+    box-shadow: 0px 0px 5px rgba(255, 107, 129, 0.5);
+}
+
+/* Botões */
+.btn-confirm, .btn-pay {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #ff6b81;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-confirm:hover, .btn-pay:hover {
+    background-color: #ff3d5d;
+}
+
+/* Estilização das Opções de Pagamento */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #fffafc;
+    border: 1px solid #ffb2c0; /* Borda suave */
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    color: #555;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.checkbox-group label:hover {
+    color: #ff6b81;
+}
+
+.checkbox-group input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #ffb2c0;
+}
+
+/* Modal de Pagamento */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     background: white;
     padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+    width: 90%;
     max-width: 400px;
-    margin: auto;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
-h2 {
-    color: #333;
+
+.modal.active {
+    display: block;
 }
-p {
-    font-size: 16px;
-    color: #666;
+
+.modal-content img {
+    width: 200px;
+    margin: 15px 0;
 }
-.btn {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
+
+.close {
     cursor: pointer;
-    margin-top: 10px;
-    border-radius: 5px;
+    color: #ff6b81;
+    font-weight: bold;
+    background: none;
+    border: none;
+    font-size: 18px;
 }
-.btn:hover {
-    background-color: #218838;
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        flex-direction: column;
+    }
+
+    .box {
+        width: 100%;
+    }
+
+    .input-row {
+        flex-direction: column;
+    }
+
+    .input-group {
+        width: 100%;
+    }
 }

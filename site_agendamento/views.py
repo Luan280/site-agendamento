@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import User, Calendar, Appointment, Service
 from sqlite3 import IntegrityError
-from datetime import datetime
-from django.http import HttpResponse
+from datetime import datetime, date
+from django.http import HttpResponse, JsonResponse
+from django.contrib import messages
 import calendar
 
 # Create your views here.
@@ -36,7 +37,7 @@ def services_view(request, telephone):
     services = Service.objects.all()
     categories = Service.CATEGORY_CHOICES  # Pegando as categorias do modelo
     user = User.objects.get(phone=telephone)
-    
+
     category_filter = request.GET.get('category')  # Obtendo o filtro da URL
     if category_filter:
         services = services.filter(category=category_filter)
@@ -48,14 +49,9 @@ def services_view(request, telephone):
         'user': user.__dict__,
         'category_filter': category_filter,
     }
-    
+
     return render(request, 'site_agendamento/services.html', context)
 
-
-import calendar
-from datetime import datetime, date
-from django.shortcuts import render
-from .models import Calendar, Service
 
 def calendar_view(request, telephone, service_id):
     """
@@ -74,10 +70,11 @@ def calendar_view(request, telephone, service_id):
 
     # Quantidade de dias do mês e dia da semana do primeiro dia
     total_dias_mes = calendar.monthrange(ano, mes)[1]
-    primeiro_dia_semana = date(ano, mes, 1).weekday()  # 0 = Segunda, 6 = Domingo
+    # 0 = Segunda, 6 = Domingo
+    primeiro_dia_semana = date(ano, mes, 1).weekday()
 
     # Ajustando para que Domingo seja 0 e Segunda seja 1
-    empty_slots = (primeiro_dia_semana + 1) % 7  
+    empty_slots = (primeiro_dia_semana + 1) % 7
 
     # Criando lista de dias do mês
     dias_mes = [date(ano, mes, dia) for dia in range(1, total_dias_mes + 1)]
@@ -108,38 +105,68 @@ def calendar_view(request, telephone, service_id):
         "calendario": calendario,
         "mes": mes_atual,
         "ano": ano,
-        "empty_slots": list(range(empty_slots)),  # Passa os espaços vazios para o template
+        # Passa os espaços vazios para o template
+        "empty_slots": list(range(empty_slots)),
         "service_type": service_type,
     }
 
-    return render(request, "site_agendamento/index.html", context)
+    return render(request, "site_agendamento/calendar.html", context)
 
 
+def agendar_horario(request, service_type, service_id, date, time):
+    data_obj = datetime.strptime(date, "%Y-%m-%d").date()
+    horario_obj = datetime.strptime(time, "%H:%M").time()
 
-def agendar_horario(request, telephone, service_id):
-    service = get_object_or_404(Service, id=service_id)
+    # Verifica se o horário ainda está disponível
+    horario_disponivel = Calendar.objects.filter(
+        date=data_obj, time=horario_obj, is_available=True
+    ).first()
+    service = Service.objects.get(id=service_id)
+    if horario_disponivel:
+        if request.method == "POST":
+            nome = request.POST.get("name")
+            telefone = request.POST.get("telephone")
 
-    if request.method == 'POST':
-        service_type = request.POST.get('service_type')
-        date = request.POST.get('date')
-        time = request.POST.get('time')
+            # Verifica se já existe usuário com esse telefone
+            user, created = User.objects.get_or_create(
+                phone=telefone, defaults={"name": nome})
 
-        if service_type and date and time:
-            # Cria o agendamento
+            # Se o usuário já existe, mas o nome for diferente, permite atualização
+            if not created and user.name != nome:
+                user.name = nome
+                user.save()
+
+            service = Service.objects.filter(id=service_id).first()
+
+            if not service:
+                messages.error(request, "Serviço não encontrado.")
+                return redirect("calendario")
+
+            # Criar agendamento
             Appointment.objects.create(
-                service=service,
-                client=telephone,
-                date=date,
-                time=time,
-                service_type=service_type,
+                user=user, service=service, calendar=horario_disponivel, status="confirmado"
             )
-            return HttpResponse("Agendamento realizado com sucesso!")
-        else:
-            return HttpResponse("Preencha todos os campos corretamente!")
 
-    # Renderiza a página
-    return render(request, 'site_agendamento/payment.html', {'service': service})
+            # Atualizar horário como indisponível
+            horario_disponivel.is_available = False
+            horario_disponivel.save()
+
+            return redirect("calendario")
+        context = {
+            "service": service,
+            "service_type": service_type,
+            "date": date,
+            "time": time,
+
+        }
+    return render(request, "site_agendamento/payment.html", context)
 
 
-def about_view(request):
-    return render(request, "site_agendamento/about.html")
+def get_client_data(request):
+    telephone = request.GET.get("telephone")
+    user = User.objects.filter(phone=telephone).first()
+
+    if user:
+        return JsonResponse({"name": user.name})
+
+    return JsonResponse({"name": ""})

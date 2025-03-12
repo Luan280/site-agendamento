@@ -92,12 +92,14 @@ select:hover {
     font-size: 20px;
     color: #ff6b81;
     margin-top: 10px;
+    font-weight: bold;
+
 }
 
 .service-item p {
-    font-size: 14px;
+    font-size: 15px;
     color: #555;
-    margin-top: 5px;
+    margin-top: 5px;    
 }
 
 /* Botão de detalhes */
