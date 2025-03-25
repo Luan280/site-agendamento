@@ -29,7 +29,11 @@ def salvar_pessoa(request):
         except Exception as Error:
             mensagem = f'Error inesperado: {Error}'
             color = 'red'
-    context = {'mensagem': mensagem, 'color': color}
+    context = {
+        'mensagem': mensagem,
+        'color': color,
+        "title" : "Login",
+    }
     return render(request, 'site_agendamento/login.html', context)
 
 
@@ -48,6 +52,7 @@ def services_view(request, telephone):
         'categories': categories,
         'user': user.__dict__,
         'category_filter': category_filter,
+        "title" : "Serviços",
     }
 
     return render(request, 'site_agendamento/services.html', context)
@@ -108,14 +113,17 @@ def calendar_view(request, telephone, service_id):
         # Passa os espaços vazios para o template
         "empty_slots": list(range(empty_slots)),
         "service_type": service_type,
+        "title" : "Agendamento",
     }
 
     return render(request, "site_agendamento/calendar.html", context)
 
 
-def agendar_horario(request, service_type, service_id, date, time):
+def payment(request, telephone, service_type, service_id, date, time):
     data_obj = datetime.strptime(date, "%Y-%m-%d").date()
+    data_formata = f'{data_obj.day}/{data_obj.month}/{data_obj.year}'
     horario_obj = datetime.strptime(time, "%H:%M").time()
+    user = get_object_or_404(User, phone=telephone)
 
     # Verifica se o horário ainda está disponível
     horario_disponivel = Calendar.objects.filter(
@@ -155,8 +163,10 @@ def agendar_horario(request, service_type, service_id, date, time):
         context = {
             "service": service,
             "service_type": service_type,
-            "date": date,
+            "date": data_formata,
             "time": time,
+            "user": user,
+            "title" : "Pagamento",
 
         }
     return render(request, "site_agendamento/payment.html", context)

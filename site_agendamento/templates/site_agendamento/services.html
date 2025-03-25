@@ -1,19 +1,16 @@
 {% extends "global/partials/base.html" %}
 {% load static %}
 
-{% block css-services %}
+{% block css-content %}
     <link rel="stylesheet" href="{% static "global/css/services.css" %}">
-{% endblock css-services %}
+{% endblock css-content %}
 
-{% block css-header %}
-    <link rel="stylesheet" href="{% static "global/css/header.css" %}">
-{% endblock css-header %}
+{% block content %}
 
 {% block header %}
     {% include "global/partials/header.html" %}
 {% endblock header %}
 
-{% block content %}
     <div class="container">
         <!-- Mensagem de boas-vindas -->
         <div class="welcome-message">

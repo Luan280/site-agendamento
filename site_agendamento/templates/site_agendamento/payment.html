@@ -1,17 +1,11 @@
 {% extends "global/partials/base.html" %}
 {% load static %}
 
-{% block css-index %}
+{% block css-content %}
     <link rel="stylesheet" href="{% static 'global/css/payment.css' %}">
-{% endblock css-index %}
+{% endblock css-content %}
 
-{% block css-header %}
-    <link rel="stylesheet" href="{% static 'global/css/header.css' %}">
-{% endblock css-header %}
-
-{% block header %}
-    {% include "global/partials/header.html" %}
-{% endblock header %}
+{% block content %}
 
 {% block mensagem %}
     {% if mensagem %}   
@@ -19,7 +13,6 @@
     {% endif %}
 {% endblock mensagem %}
 
-{% block payment %}
 <div class="container">
     <!-- Resumo do Serviço -->
     <div class="box box-resume">
@@ -36,42 +29,32 @@
             <p><strong>Valor Total:</strong> R$ {{ service.application }}</p>
         {% endif %}
     </div>
-
     <!-- Formulário de Cliente + Pagamento -->
     <div class="box box-payment">
-        <h2>Confirme Seus Dados</h2>
+        <h2>Confirme Seus Dados:</h2>
         <form id="customer-form">
             {% csrf_token %}
 
             <!-- Entrada de Nome e Telefone -->
             <div class="input-row">
                 <div class="input-group">
-                    <label for="phone">Telefone:</label>
-                    <input type="text" id="phone" name="phone" placeholder="(99) 99999-9999" required>
+                    <label for="name">Nome completo:</label>
+                    {% if user.name == "" %}
+                        <input type="text" id="name" name="name" placeholder="Vivian Leonardo Sales">
+                    {% else %}
+                        <input type="text" id="name" name="name" placeholder="Vivian Leonardo Sales" value=" {{user.name}} ">
+                    {% endif %}
+                    
                 </div>
-
                 <div class="input-group">
-                    <label for="name">Nome:</label>
-                    <input type="text" id="name" name="name" placeholder="Seu Nome Completo" required>
+                    <label for="phone">Telefone:</label>
+                    <input type="text" id="phone" name="phone" placeholder="(11) 96829-9535" value =" {{ user.phone }} ">
                 </div>
             </div>
-
-            <button type="button" class="btn-confirm" onclick="validateCustomer()">Confirmar Dados</button>
         </form>
-
         <!-- Opções de Pagamento -->
-        <h2>Escolha a Forma de Pagamento</h2>
+       
         <form id="payment-form">
-            <label>
-                <input type="radio" name="payment_option" value="half" checked>
-                Pagar Sinal (R$ {{ service.application|divisibleby:2 }})
-            </label>
-            <br>
-            <label>
-                <input type="radio" name="payment_option" value="full">
-                Pagar Valor Total (R$ {{ service.application }})
-            </label>
-            <br><br>
             <button type="button" class="btn-pay" onclick="showModal()">Gerar QR Code</button>
         </form>
     </div>
@@ -87,6 +70,9 @@
     </div>
 </div>
 
+<script src='https://code.jquery.com/jquery-3.7.1.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+<script>$('#phone').mask('(00) 00000-0000', {placeholder: "(11) 96829-9535"});</script>
 <script>
     function showModal() {
         document.getElementById("payment-modal").classList.add("active");
@@ -107,4 +93,4 @@
         }
     }
 </script>
-{% endblock payment %}
+{% endblock content %}

@@ -1,15 +1,15 @@
 {% extends "global/partials/base.html" %}
 {% load static %}
 
-{% block css-login %}
+{% block css-content %}
     <link rel="stylesheet" href="{% static "global/css/login.css" %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
-{% endblock css-login %}
+{% endblock css-content %}
 
-{% block login %}
+{% block content %}
     <main class='main-login'>
         <img src="{% static "global/imgs/logo-transparente-login.png" %}" alt="">
         <h1>Studio Vivian Sales</h1>
@@ -34,4 +34,4 @@
     <script src='https://code.jquery.com/jquery-3.7.1.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script>$('#phone').mask('(00) 00000-0000', {placeholder: "(12) 34567-8910"});</script>
-{% endblock login %}
+{% endblock content %}

@@ -1,5 +1,9 @@
 {% load static %}
 
+{% block css-content %}
+    <link rel="stylesheet" href="{% static "global/css/header.css" %}">
+{% endblock css-content %}
+
 <header>
 	<div id='logo-header'>
 		<img src="{% static "global/imgs/logo-transparente-header.png" %}" alt="Logo-Studio">

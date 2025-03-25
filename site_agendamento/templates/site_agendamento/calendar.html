@@ -1,19 +1,11 @@
 {% extends "global/partials/base.html" %}
 {% load static %}
 
-{% block css-index %}
+{% block css-content %}
 <link rel="stylesheet" href="{% static "global/css/index.css" %}">
-{% endblock css-index %}
+{% endblock css-content %}
 
-{% block css-header %}
-<link rel="stylesheet" href="{% static "global/css/header.css" %}">
-{% endblock css-header %}
-
-{% block header %}
-{% include "global/partials/header.html" %}
-{% endblock header %}
-
-{% block calendar %}
+{% block content %}
 
 {% if mensagem %}
 <div class="selection-message">{{ mensagem }}</div>
@@ -85,23 +77,25 @@
             <div class="day" onclick="document.getElementById('modal-{{ item.dia }}').classList.add('active')">
                 {{ item.dia.day }}
             </div>
-        
-            <!-- Modal para selecionar horários -->
-            <div id="modal-{{ item.dia }}" class="modal">
-                <h3>Escolha um horário - {{ item.dia|date:"d/m/Y" }}</h3>
-                <ul>
-                    {% for horario in item.horarios %}
-                    <a class="horario" href="{% url 'agendar_horario' service_type service.id item.dia horario|time:'H:i' %}">
-                        {{ horario|time:"H:i" }}
-                    </a>
-                    {% empty %}
-                    <li>Sem horários disponíveis</li>
-                    {% endfor %}
-                </ul>
-                <button class="close" onclick="document.getElementById('modal-{{ item.dia }}').classList.remove('active')">Fechar</button>
-            </div>
+            {% if service_type%}
+                <!-- Modal para selecionar horários -->
+                <div id="modal-{{ item.dia }}" class="modal">
+                    <h3>Escolha um horário - {{ item.dia|date:"d/m/Y" }}</h3>
+                    <ul>
+                        {% for horario in item.horarios %}
+                        
+                        <a class="horario" href="{% url 'agendar_horario' telephone service_type service.id item.dia horario|time:'H:i' %}">
+                            {{ horario|time:"H:i" }}
+                        </a>
+                        {% empty %}
+                        <li>Sem horários disponíveis</li>
+                        {% endfor %}
+                    </ul>
+                    <button class="close" onclick="document.getElementById('modal-{{ item.dia }}').classList.remove('active')">Fechar</button>
+                </div>
+            {% endif %}
             {% endfor %}
         </div>
     </div>    
 </div>
-{% endblock calendar %}
+{% endblock content %}

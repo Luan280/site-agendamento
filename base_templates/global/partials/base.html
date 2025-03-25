@@ -1,22 +1,15 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Exemplo de um cabeçalho básico em HTML.">
     <meta name="author" content="Seu Nome">
-    <title>Studio</title>
-    {% block css-login %}{% endblock css-login %}
-    {% block css-services %}{% endblock css-services %}
-    {% block css-index %}{% endblock css-index %}
-    {% block css-header %}{% endblock css-header %}
+    <title>{{ title }} - Studio</title>
+    {% block css-content %}{% endblock css-content %}
 </head>
 <body>
-    {% block header %}{% endblock header %}
-    {% block login %}{% endblock login %}
     {% block content %}{% endblock content %}
-    {% block calendar %}{% endblock calendar %}
-    {% block payment %}{% endblock payment %}
 </body>
 </html>

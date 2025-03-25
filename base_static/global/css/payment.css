@@ -62,15 +62,17 @@ body {
 /* Estilização dos Campos de Entrada */
 .input-row {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     gap: 10px;
     margin-bottom: 15px;
+    
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 93%;
     text-align: left;
 }
 
