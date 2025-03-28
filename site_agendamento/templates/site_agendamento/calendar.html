@@ -7,8 +7,12 @@
 
 {% block content %}
 
+{% block header %}
+    {% include "global/partials/header.html" %}
+{% endblock header %}
+
 {% if mensagem %}
-<div class="selection-message">{{ mensagem }}</div>
+    <div class="selection-message">{{ mensagem }}</div>
 {% endif %}
 
 <div class="container">
@@ -20,7 +24,7 @@
 				<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
         {% if not service.maintenance == None %}   
         <div class="checkbox-group">
-            <form id="service-form" method="GET" action="{% url 'home' telephone service.id %}">
+            <form id="service-form" method="GET" action="{% url 'calendario' telephone service.id %}">
                 <h2>Escolha o tipo de serviço:</h2>
                     <label>
                         <input type="radio" name="service_type" value="manutencao" 
@@ -38,7 +42,7 @@
             </div>
         {% else %}
         <div class="checkbox-group">
-            <form id="service-form" method="GET" action="{% url 'home' telephone service.id %}">
+            <form id="service-form" method="GET" action="{% url 'calendario' telephone service.id %}">
                 <h2>Tipo de serviço:</h2>
                     <label>
                         <input type="radio" name="service_type" value="aplicacao" 

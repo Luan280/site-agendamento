@@ -1,19 +1,54 @@
 {% load static %}
 
 {% block css-content %}
-    <link rel="stylesheet" href="{% static "global/css/header.css" %}">
+    <link rel="stylesheet" href="{% static 'global/css/header.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock css-content %}
 
 <header>
-	<div id='logo-header'>
-		<img src="{% static "global/imgs/logo-transparente-header.png" %}" alt="Logo-Studio">
-	</div>
-		<h1>Studio Vivian Sales</h1>
-		<nav>
-				<ul>
-					<li><a href="#services">Serviços</a></li>
-						<li><a href="#about">Sobre</a></li>
-						<li><a href="#contact">Contato</a></li>
-				</ul>
-		</nav>
+    <div id='logo-header'>
+        <img src="{% static 'global/imgs/logo-transparente-header.png' %}" alt="Logo-Studio">
+    </div>
+    <h1 id="header-title">Studio Vivian Sales</h1>
+    <nav>
+        <ul>
+            <li>
+                <a href="#services">
+                    <span class="nav-icon"><i class="fas fa-concierge-bell"></i></span>
+                    <span class="nav-text">Serviços</span>
+                </a>
+            </li>
+            <li>
+                <a href="#about">
+                    <span class="nav-icon"><i class="fas fa-info-circle"></i></span>
+                    <span class="nav-text">Sobre</span>
+                </a>
+            </li>
+            <li>
+                <a href="#contact">
+                    <span class="nav-icon"><i class="fas fa-envelope"></i></span>
+                    <span class="nav-text">Contato</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </header>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function updateNav() {
+            if (window.innerWidth <= 950) {
+                document.getElementById("header-title").style.display = "none";
+                document.querySelectorAll(".nav-text").forEach(el => el.style.display = "none");
+                document.querySelectorAll(".nav-icon").forEach(el => el.style.display = "inline-block");
+            } else {
+                document.getElementById("header-title").style.display = "block";
+                document.querySelectorAll(".nav-text").forEach(el => el.style.display = "inline-block");
+                document.querySelectorAll(".nav-icon").forEach(el => el.style.display = "inline");
+            }
+        }
+        
+        updateNav();
+        window.addEventListener("resize", updateNav);
+    });
+</script>

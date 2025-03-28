@@ -1,3 +1,4 @@
+/* Estilos Gerais */
 /* Corpo da página */
 body {
     margin: 0;
@@ -6,92 +7,90 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh; 
+    min-height: 100vh;
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #fff0f5; /* Fundo delicado rosado */
     color: #444;
 }
 
+/* Mensagem de seleção */
+.selection-message {
+    background-color: #ff6b81;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Centralizar os containers na tela */
 .container {
     display: flex;
     gap: 20px; /* Espaçamento entre as caixas */
-    margin: 20px auto;
-    max-width: 1200px;
-    flex-wrap: wrap; /* Para ajustar em telas menores */
+    max-width: 1000px; /* Definição de largura máxima para não ficar muito espalhado */
+    width: 100%;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
 }
 
 /* Estilização das Caixas */
 .box {
-    flex: 1; /* Faz as caixas ocuparem o mesmo espaço */
     background-color: #ffffff;
     border: 1px solid #ffb2c0; /* Bordas suaves rosadas */
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 9 0%;
+    max-width: 400px; /* Limita o tamanho das caixas */
+    text-align: left;
 }
 
 .box:hover {
-    transform: scale(1.02); /* Pequeno zoom ao passar o mouse */
+    transform: scale(1.02);
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Estilização do Resumo do Serviço */
-.box img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
+.box h2 {
+    font-size: 22px;
+    color: #ff6b81;
     margin-bottom: 15px;
 }
 
-.box h2, .box h3 {
-    font-size: 24px;
-    color: #ff6b81; /* Título com um rosa mais vibrante */
-    margin-bottom: 10px;
-}
-
-.box p {
-    font-size: 16px;
-    color: #555; /* Texto suave */
-    margin-top: 5px;
-}
-
-/* Estilização dos Campos de Entrada */
+/* Estilização das Entradas */
 .input-row {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 15px;
-    
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
-    width: 93%;
     text-align: left;
 }
 
 .input-group label {
     font-size: 14px;
     color: #555;
-    margin-bottom: 5px;
     font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .input-group input {
-    width: 100%;
-    padding: 10px;
+    width: 95%;
+    padding: 12px;
     border: 2px solid #ffb2c0;
     border-radius: 8px;
     font-size: 14px;
     text-align: center;
-    transition: 0.3s ease-in-out;
     background-color: #fffafc;
+    transition: 0.3s;
 }
 
 .input-group input:focus {
@@ -100,8 +99,8 @@ body {
     box-shadow: 0px 0px 5px rgba(255, 107, 129, 0.5);
 }
 
-/* Botões */
-.btn-confirm, .btn-pay {
+/* Estilização dos Botões */
+.btn-pay {
     width: 100%;
     padding: 12px;
     font-size: 16px;
@@ -112,40 +111,29 @@ body {
     border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
+    margin-top: 10px;
 }
 
-.btn-confirm:hover, .btn-pay:hover {
-    background-color: #ff3d5d;
+.btn-pay:hover {
+    background-color: #ff4f68;
 }
 
 /* Estilização das Opções de Pagamento */
-.checkbox-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 20px 0;
-    padding: 15px;
-    background-color: #fffafc;
-    border: 1px solid #ffb2c0; /* Borda suave */
-    border-radius: 12px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.checkbox-group label {
+.box-payment form label {
     display: flex;
     align-items: center;
-    font-size: 17px;
+    font-size: 16px;
     color: #555;
     margin-bottom: 10px;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.3s;
 }
 
-.checkbox-group label:hover {
+.box-payment form label:hover {
     color: #ff6b81;
 }
 
-.checkbox-group input[type="radio"] {
+.box-payment input[type="radio"] {
     margin-right: 10px;
     accent-color: #ffb2c0;
 }
@@ -154,7 +142,6 @@ body {
 .modal {
     display: none;
     position: fixed;
-    z-index: 10;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -163,7 +150,7 @@ body {
     border-radius: 15px;
     text-align: center;
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
-    width: 90%;
+    width: 100%;
     max-width: 400px;
 }
 
@@ -188,19 +175,12 @@ body {
 /* Responsividade */
 @media (max-width: 768px) {
     .container {
-        padding: 20px;
         flex-direction: column;
+        align-items: center;
     }
 
     .box {
-        width: 100%;
-    }
-
-    .input-row {
-        flex-direction: column;
-    }
-
-    .input-group {
-        width: 100%;
+        width: 95%; /* Ajuste para ocupar mais espaço em telas menores */
+        max-width: 90%;
     }
 }

@@ -9,33 +9,41 @@ import calendar
 # Create your views here.
 
 
-def salvar_pessoa(request):
-    mensagem = None
-    color = None
-    if request.method == "POST":
-        telephone = request.POST.get("phone")
-        user = User.objects.filter(phone=telephone)
-        if user:
-            return redirect('services', telephone)
-        try:
-            # Salvar no banco de dados
-            User.objects.create(phone=telephone)
-            mensagem = 'Cadastro realizado com sucesso'
-            color = 'green'
-            return redirect('services', telephone)
-        except IntegrityError as Error_IntegrityError:
-            mensagem = f'Error: {Error_IntegrityError}'
-            color = 'red'
-        except Exception as Error:
-            mensagem = f'Error inesperado: {Error}'
-            color = 'red'
-    context = {
-        'mensagem': mensagem,
-        'color': color,
-        "title" : "Login",
-    }
-    return render(request, 'site_agendamento/login.html', context)
+from django.shortcuts import render, redirect
+from django.db import IntegrityError
+from .models import User
 
+def salvar_pessoa(request):
+    context = {
+        'mensagem': None,
+        'color': None,
+        'title': 'Login'
+    }
+    
+    if request.method == "POST":
+        telefone = request.POST.get("phone")
+        
+        if not telefone:
+            context['mensagem'] = 'Por favor, insira um número de telefone.'
+            context['color'] = 'red'
+            return render(request, 'site_agendamento/login.html', context)
+        
+        # Verifica se o usuário já existe
+        if User.objects.filter(phone=telefone).exists():
+            return redirect('services', telefone)
+        
+        try:
+            # Cria um novo usuário
+            User.objects.create(phone=telefone)
+            return redirect('services', telefone)
+        except IntegrityError:
+            context['mensagem'] = 'Erro: Número de telefone já cadastrado.'
+            context['color'] = 'red'
+        except Exception as e:
+            context['mensagem'] = f'Erro inesperado: {str(e)}'
+            context['color'] = 'red'
+    
+    return render(request, 'site_agendamento/login.html', context)
 
 def services_view(request, telephone):
     services = Service.objects.all()
@@ -119,58 +127,63 @@ def calendar_view(request, telephone, service_id):
     return render(request, "site_agendamento/calendar.html", context)
 
 
-def payment(request, telephone, service_type, service_id, date, time):
-    data_obj = datetime.strptime(date, "%Y-%m-%d").date()
-    data_formata = f'{data_obj.day}/{data_obj.month}/{data_obj.year}'
-    horario_obj = datetime.strptime(time, "%H:%M").time()
-    user = get_object_or_404(User, phone=telephone)
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from datetime import datetime
+from .models import User, Service, Calendar, Appointment
 
-    # Verifica se o horário ainda está disponível
+def payment(request, telephone, service_type, service_id, date, time):
+    # Formata data e horário
+    data_obj = datetime.strptime(date, "%Y-%m-%d").date()
+    horario_obj = datetime.strptime(time, "%H:%M").time()
+    data_formatada = data_obj.strftime("%d/%m/%Y")
+
+    user = get_object_or_404(User, phone=telephone)
+    service = Service.objects.filter(id=service_id).first()
     horario_disponivel = Calendar.objects.filter(
         date=data_obj, time=horario_obj, is_available=True
     ).first()
-    service = Service.objects.get(id=service_id)
-    if horario_disponivel:
-        if request.method == "POST":
-            nome = request.POST.get("name")
-            telefone = request.POST.get("telephone")
 
-            # Verifica se já existe usuário com esse telefone
-            user, created = User.objects.get_or_create(
-                phone=telefone, defaults={"name": nome})
+    # Captura a forma de pagamento
+    payment_type = request.GET.get("payment_type")
+    mensagem = "Por favor, selecione entre Sinal ou Valor Total antes de continuar." if not payment_type else None
 
-            # Se o usuário já existe, mas o nome for diferente, permite atualização
-            if not created and user.name != nome:
-                user.name = nome
-                user.save()
+    if request.method == "POST" and horario_disponivel:
+        nome = request.POST.get("name")
+        telefone = request.POST.get("telephone")
 
-            service = Service.objects.filter(id=service_id).first()
+        user, created = User.objects.get_or_create(
+            phone=telefone, defaults={"name": nome}
+        )
 
-            if not service:
-                messages.error(request, "Serviço não encontrado.")
-                return redirect("calendario")
+        if not created and user.name != nome:
+            user.name = nome
+            user.save()
 
-            # Criar agendamento
-            Appointment.objects.create(
-                user=user, service=service, calendar=horario_disponivel, status="confirmado"
-            )
-
-            # Atualizar horário como indisponível
-            horario_disponivel.is_available = False
-            horario_disponivel.save()
-
+        if not service:
+            messages.error(request, "Serviço não encontrado.")
             return redirect("calendario")
-        context = {
-            "service": service,
-            "service_type": service_type,
-            "date": data_formata,
-            "time": time,
-            "user": user,
-            "title" : "Pagamento",
 
-        }
+        # Criar agendamento e marcar horário como indisponível
+        Appointment.objects.create(
+            user=user, service=service, calendar=horario_disponivel, status="confirmado"
+        )
+        horario_disponivel.is_available = False
+        horario_disponivel.save()
+
+        return redirect("calendario")
+
+    context = {
+        "service": service,
+        "service_type": service_type,
+        "date": data_formatada,
+        "time": time,
+        "user": user,
+        "title": "Pagamento",
+        "mensagem": mensagem,
+        "payment_type": payment_type,
+    }
     return render(request, "site_agendamento/payment.html", context)
-
 
 def get_client_data(request):
     telephone = request.GET.get("telephone")

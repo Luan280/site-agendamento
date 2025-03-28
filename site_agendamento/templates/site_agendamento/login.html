@@ -2,36 +2,45 @@
 {% load static %}
 
 {% block css-content %}
-    <link rel="stylesheet" href="{% static "global/css/login.css" %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="{% static 'global/css/login.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
 {% endblock css-content %}
 
 {% block content %}
-    <main class='main-login'>
-        <img src="{% static "global/imgs/logo-transparente-login.png" %}" alt="">
+    <main class="main-login">
+        <img src="{% static 'global/imgs/logo-transparente-login.png' %}" alt="Logo Studio Vivian Sales">
         <h1>Studio Vivian Sales</h1>
         <h2>AGENDE O SEU HORÁRIO ON-LINE</h2>
+        
         <div class="login-container">
             <h3>Telefone:</h3>
-        <div style="color: {{color}}; font-family: Arial, Helvetica, sans-serif;;">
-            {% if mensagem and color%}   
+            
+            {% if mensagem and color %}
+                <div class="message" style="color: {{ color }}; font-family: Arial, Helvetica, sans-serif;">
                     {{ mensagem }}
+                </div>
             {% endif %}
-        </div>
+            
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="phone">Telefone:</label>
-                    <input type="tel" id="phone" name="phone"  placeholder="Digite seu telefone" required>
+                    <input type="tel" id="phone" name="phone" placeholder="Digite seu telefone" required>
                 </div>
                 <button type="submit" class="btn">Entrar</button>
             </form>
         </div>
     </main>
-    <script src='https://code.jquery.com/jquery-3.7.1.min.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
-    <script>$('#phone').mask('(00) 00000-0000', {placeholder: "(12) 34567-8910"});</script>
+
+    {% block scripts %}
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#phone').mask('(00) 00000-0000', {placeholder: "(12) 34567-8910"});
+            });
+        </script>
+    {% endblock scripts %}
 {% endblock content %}

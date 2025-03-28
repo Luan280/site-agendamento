@@ -50,13 +50,13 @@ body {
     }
 
     .box {
-        width: 100%; /* Ocupa toda a largura da tela */
+        width: 90%; /* Ocupa toda a largura da tela */
     }
 
     .day {
         width: 60px;
         height: 60px;
-        font-size: 14px;
+        font-size: 18px;
     }
 }
 
@@ -69,7 +69,7 @@ body {
     .day {
         width: 50px;
         height: 50px;
-        font-size: 12px;
+        font-size: 20px;
     }
 }
 

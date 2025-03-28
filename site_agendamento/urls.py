@@ -7,7 +7,7 @@ urlpatterns = [
     path('servicos/<str:telephone>/', views.services_view, name='services'),
 
     path('calendar/<str:telephone>/<int:service_id>',
-         views.calendar_view, name='home'),
+         views.calendar_view, name='calendario'),
 
     path("agendar/<str:telephone>/<str:service_type>/<int:service_id>/<str:date>/<str:time>/",
          views.payment, name="agendar_horario"),
