@@ -43,7 +43,7 @@
                     <p><strong>Manutenção:</strong> R$ {{ service.maintenance }}</p>
                     <p><strong>Duração:</strong> {{ service.duration }} minutos</p>
                     <!-- Link para agendar horário -->
-                    <a href="{% url 'calendario' telephone service.id %}">Agendar horário</a>
+                    <a href="{% url 'calendario' service.id %}">Agendar horário</a>
                 </div>
             {% endfor %}
         </div>

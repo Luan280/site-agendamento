@@ -1,18 +1,56 @@
 {% extends "global/partials/base.html" %}
 {% load static %}
 
-{% comment %} Bloco do link para o CSS do Index{% endcomment %}
-{% block css-index %}
+{% block css-content %}
 		<link rel="stylesheet" href="{% static "global/css/about.css" %}">
-{% endblock css-index %}
+{% endblock css-content %}
 
-{% comment %} Bloco do link para o CSS do Header{% endcomment %}
-{% block css-header %}
-		<link rel="stylesheet" href="{% static "global/css/header.css" %}">
-{% endblock css-header %}
+{% block content %}
 
-
-{% comment %} Inclui o Header {% endcomment %}
 {% block header %}
 		{% include "global/partials/header.html" %}
 {% endblock header %}
+<main>
+		<section class="sobre">
+				<h2>O QUE É EXTENSÃO DE CÍLIOS?</h2>
+				<p>Ao contrário dos cílios postiços, que são aplicados temporariamente, as extensões são feitas fio a fio, proporcionando um resultado mais natural e duradouro.</p>
+				
+				<h2>COMO É FEITA?</h2>
+				<p>A extensão de cílios é a aplicação de fios sintéticos sobre os cílios naturais, um a um, usando cola especial. Colados apenas nos fios, então não há nenhum contato da cola com a pálpebra (pele).</p>
+				
+				<h2>VAI DOER?</h2>
+				<p>Não! O procedimento é indolor. Você ficará de olhos fechados durante toda a aplicação e muitas clientes até dormem durante o processo.</p>
+				
+				<h2>QUANTO TEMPO DURA O PROCEDIMENTO?</h2>
+				<p>A primeira aplicação pode levar de 1 hora e meia a 2 horas, dependendo do estilo e do volume de cílios que você escolher. Manutenções costumam ser mais rápidas.</p>
+				
+				<h2>QUANTO TEMPO DURA A EXTENSÃO?</h2>
+				<p>As extensões de cílios podem durar de 3 a 4 semanas, mas é recomendado fazer manutenções a cada 2 a 3 semanas para garantir que os cílios permaneçam cheios e bonitos.</p>
+				
+				<h2>POSSO USAR MAQUIAGEM DEPOIS DO PROCEDIMENTO?</h2>
+				<p>Sim! Pode passar maquiagem evitando contato direto de produtos com os cílios, e rímel somente nos cílios inferiores.</p>
+				
+				<h2>O QUE É MANUTENÇÃO?</h2>
+				<p>Quando a profissional remove os cílios que cresceram, reaplica novos, limpa a área dos olhos e ajusta os cílios para mantê-los bonitos e duradouros.</p>
+				
+				<h2>QUANDO FAZER?</h2>
+				<p>Quando você perceber que os fios já caíram 50% e começaram a aparentar falhas. Consulte o tempo de durabilidade de cada volume.</p>
+		</section>
+		
+		<section class="profissional">
+				<h2>QUEM É A PROFISSIONAL QUE VAI ME ATENDER?</h2>
+				<h3>Vivian Sales</h3>
+				<ul>
+						<li>Precisão e cuidado em cada serviço prestado.</li>
+						<li>3 anos de experiência na área.</li>
+						<li>Dedicada e perfeccionista.</li>
+						<li>Apaixonada em elevar a autoestima feminina.</li>
+						<li>Empreendedora.</li>
+				</ul>
+		</section>
+</main>
+
+<footer>
+		<p>&copy; 2025 Studio Vivian Sales</p>
+</footer>
+{% endblock content %}

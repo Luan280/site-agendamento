@@ -24,7 +24,7 @@
 				<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
         {% if not service.maintenance == None %}   
         <div class="checkbox-group">
-            <form id="service-form" method="GET" action="{% url 'calendario' telephone service.id %}">
+            <form id="service-form" method="GET" action="{% url 'calendario' service.id %}">
                 <h2>Escolha o tipo de serviço:</h2>
                     <label>
                         <input type="radio" name="service_type" value="manutencao" 
@@ -42,7 +42,7 @@
             </div>
         {% else %}
         <div class="checkbox-group">
-            <form id="service-form" method="GET" action="{% url 'calendario' telephone service.id %}">
+            <form id="service-form" method="GET" action="{% url 'calendario' service.id %}">
                 <h2>Tipo de serviço:</h2>
                     <label>
                         <input type="radio" name="service_type" value="aplicacao" 
@@ -88,7 +88,7 @@
                     <ul>
                         {% for horario in item.horarios %}
                         
-                        <a class="horario" href="{% url 'agendar_horario' telephone service_type service.id item.dia horario|time:'H:i' %}">
+                        <a class="horario" href="{% url 'agendar_horario' service_type service.id item.dia horario|time:'H:i' %}">
                             {{ horario|time:"H:i" }}
                         </a>
                         {% empty %}

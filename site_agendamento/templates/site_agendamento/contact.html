@@ -1,0 +1,14 @@
+{% extends "global/partials/base.html" %}
+{% load static %}
+
+{% block css-content %}
+<link rel="stylesheet" href="{% static "global/css/index.css" %}">
+{% endblock css-content %}
+
+{% block content %}
+
+{% block header %}
+		{% include "global/partials/header.html" %}
+{% endblock header %}
+
+{% endblock content %}

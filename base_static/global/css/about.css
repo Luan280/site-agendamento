@@ -1,6 +1,59 @@
-body{
+body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.sobre h2,
+.profissional h2 {
+    color: #b38b6d;
+    border-bottom: 2px solid #b38b6d;
+    padding-bottom: 5px;
+}
+
+.profissional h3 {
+    color: #555;
+    margin-top: 10px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 5px;
+}
+
+footer {
     text-align: center;
-    background-color: #f4f4f4;
-    padding: 100px 100px;
+    padding: 10px;
+    background-color: #b38b6d;
+    color: white;
+    margin-top: 20px;
 }
