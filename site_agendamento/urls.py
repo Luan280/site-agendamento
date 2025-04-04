@@ -15,6 +15,6 @@ urlpatterns = [
     path("get_client_data/", views.get_client_data, name="get_client_data"),
 
     path('sobre/', views.about, name='about'),
-    
-    path('contact/', views.contact, name='contact'),
+
+    path('agendamentos/', views.appoinments, name='appoinments'),
 ]

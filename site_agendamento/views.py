@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 import calendar
 
+
 def salvar_pessoa(request):
     context = {"mensagem": None, "color": None, "title": "Login"}
 
@@ -37,7 +38,7 @@ def salvar_pessoa(request):
 def services_view(request):
     services = Service.objects.all()
     categories = dict(Service.CATEGORY_CHOICES)
-    
+
     user = request.user  # O context processor já fornece o usuário
 
     category_filter = request.GET.get("category")
@@ -66,9 +67,10 @@ def calendar_view(request, service_id):
     primeiro_dia_semana = date(ano, mes, 1).weekday()
     empty_slots = (primeiro_dia_semana + 1) % 7
     dias_mes = [date(ano, mes, dia) for dia in range(1, total_dias_mes + 1)]
-    
+
     calendario = [
-        {"dia": dia, "horarios": Calendar.objects.filter(date=dia, is_available=True).values_list("time", flat=True)}
+        {"dia": dia, "horarios": Calendar.objects.filter(
+            date=dia, is_available=True).values_list("time", flat=True)}
         for dia in dias_mes
     ]
 
@@ -97,8 +99,9 @@ def payment(request, service_type, service_id, date, time):
 
     user = request.user
     service = get_object_or_404(Service, id=service_id)
-    horario_disponivel = Calendar.objects.filter(date=data_obj, time=horario_obj, is_available=True).first()
-    
+    horario_disponivel = Calendar.objects.filter(
+        date=data_obj, time=horario_obj, is_available=True).first()
+
     payment_type = request.GET.get("payment_type")
     mensagem = "Por favor, selecione entre Sinal ou Valor Total antes de continuar." if not payment_type else None
 
@@ -109,7 +112,8 @@ def payment(request, service_type, service_id, date, time):
             user.name = nome
             user.save()
 
-        Appointment.objects.create(user=user, service=service, calendar=horario_disponivel, status="confirmado")
+        Appointment.objects.create(
+            user=user, service=service, calendar=horario_disponivel, status="confirmado")
         horario_disponivel.is_available = False
         horario_disponivel.save()
 
@@ -138,5 +142,6 @@ def about(request):
     return render(request, "site_agendamento/about.html", context=context)
 
 
-def contact(request):
-    return render(request, "site_agendamento/contact.html")
+def appoinments(request):
+    
+    return render(request, "site_agendamento/appoinments.html")
