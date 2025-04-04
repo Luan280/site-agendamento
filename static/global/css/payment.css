@@ -1,0 +1,186 @@
+/* Estilos Gerais */
+/* Corpo da página */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #fff0f5; /* Fundo delicado rosado */
+    color: #444;
+}
+
+/* Mensagem de seleção */
+.selection-message {
+    background-color: #ff6b81;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Centralizar os containers na tela */
+.container {
+    display: flex;
+    gap: 20px; /* Espaçamento entre as caixas */
+    max-width: 1000px; /* Definição de largura máxima para não ficar muito espalhado */
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilização das Caixas */
+.box {
+    background-color: #ffffff;
+    border: 1px solid #ffb2c0; /* Bordas suaves rosadas */
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 9 0%;
+    max-width: 400px; /* Limita o tamanho das caixas */
+    text-align: left;
+}
+
+.box:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.box h2 {
+    font-size: 22px;
+    color: #ff6b81;
+    margin-bottom: 15px;
+}
+
+/* Estilização das Entradas */
+.input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 95%;
+    padding: 12px;
+    border: 2px solid #ffb2c0;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #fffafc;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #ff6b81;
+    box-shadow: 0px 0px 5px rgba(255, 107, 129, 0.5);
+}
+
+/* Estilização dos Botões */
+.btn-pay {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #ff6b81;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn-pay:hover {
+    background-color: #ff4f68;
+}
+
+/* Estilização das Opções de Pagamento */
+.box-payment form label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.box-payment form label:hover {
+    color: #ff6b81;
+}
+
+.box-payment input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #ffb2c0;
+}
+
+/* Modal de Pagamento */
+.modal {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-content img {
+    width: 200px;
+    margin: 15px 0;
+}
+
+.close {
+    cursor: pointer;
+    color: #ff6b81;
+    font-weight: bold;
+    background: none;
+    border: none;
+    font-size: 18px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .box {
+        width: 95%; /* Ajuste para ocupar mais espaço em telas menores */
+        max-width: 90%;
+    }
+}

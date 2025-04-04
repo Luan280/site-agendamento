@@ -1,49 +1,131 @@
+/* Corpo da página */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-}
-.container {
-    max-width: 900px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-h1 {
     text-align: center;
-    color: #333;
-}
-.service {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    margin-bottom: 15px;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-.service img {
-    width: 120px;
-    height: 120px;
-    border-radius: 8px;
-    object-fit: cover;
-    margin-right: 15px;
-}
-.service-details {
-    flex: 1;
-}
-.service h2 {
+    background-color: #fff0f5;
+    color: #444;
     margin: 0;
-    color: #333;
+    padding-top: 80px; /* Garante espaço para o header fixo */
 }
-.service p {
-    margin: 5px 0;
-    color: #555;
-}
-.service .price {
+
+/* Ajuste para a mensagem de boas-vindas */
+.welcome-message {
+    background: linear-gradient(to right, #ffb2c0, #ff6b81);
+    color: white;
+    text-align: center;
+    padding: 4px;
+    font-size: 12px;
     font-weight: bold;
-    color: #27ae60;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+/* Efeito de fade-in ao carregar */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.welcome-message {
+    animation: fadeIn 1.0s ease-in-out;
+}
+
+
+/* Estilo para o filtro de categorias */
+form {
+    text-align: center;
+    margin: 20px 0;
+}
+
+select {
+    padding: 10px;
+    border: 2px solid #ffb2c0;
+    background: white;
+    color: #333;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+select:hover {
+    background: #ffb2c0;
+    color: white;
+}
+/* Estilos para a lista de serviços */
+.services-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.service-item {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    text-align: center;
+    padding: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.service-item:hover {
+    transform: scale(1.05);
+}
+
+.service-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+}
+
+.service-item h3 {
+    font-size: 20px;
+    color: #ff6b81;
+    margin-top: 10px;
+    font-weight: bold;
+
+}
+
+.service-item p {
+    font-size: 15px;
+    color: #555;
+    margin-top: 5px;    
+}
+
+/* Botão de detalhes */
+.service-item a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: #ff6b81;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.service-item a:hover {
+    background: #ffb2c0;
+}
+/* Responsividade */
+@media (max-width: 768px) {
+    .services-list {
+        flex:auto;
+        align-items: center;
+    }
+
+    .service-item {
+        width: 47%;
+    }
 }

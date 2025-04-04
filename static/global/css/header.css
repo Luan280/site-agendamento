@@ -1,48 +1,108 @@
-/* Estilo do header */
+@import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+/* Estilização do Header */
 header {
-    background-color: #ffb2c0;
-    color: white;
-    padding: 20px 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    
-}
-
-/* Estilo do título principal */
-header h1 {
-    margin: 0;
-    font-size: 2em;
-    margin-top: 0px;
-}
-
-header nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    position: fixed; /* Mantém o header fixo no topo */
+    top: 0;
+    width: 100%;
+    background-color: rgba(255, 178, 192, 0.9); /* Fundo rosado suave */
     display: flex;
-    justify-content: right;
-    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 25px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
-header nav ul li {
+/* Logo */
+#logo-header img {
+    height: 60px;
+    max-width: 150px;
+}
+
+/* Título com fonte personalizada */
+header h1 {
+    font-family: 'Tangerine', cursive;
+    font-size: 38px; /* Tamanho aumentado para destacar */
+    color: white;
+    font-weight: bold;
+    text-transform: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Navegação */
+nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+nav ul li {
     display: inline;
 }
 
-header nav ul li a {
-    color: white;
+nav ul li a {
     text-decoration: none;
+    color: white;
+    font-size: 18px;
     font-weight: bold;
-    padding: 5px 10px;
-    transition: background-color 0.3s, color 0.3s;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-header nav ul li a:hover {
-    background-color: white;
-    color: black;
-    border-radius: 5px;
+nav ul li a:hover{
+    text-decoration: underline;
+    background-color: #ff6b81;
 }
-#logo-header{
-    justify-content: left;
-    height: 20px;
-    width: 20px;
+
+/* Ícones para navegação */
+.nav-icon {
+    display: none;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+    }
+
+    header h1 {
+        display: none;
+    }
+
+    #logo-header img {
+        height: 50px;
+    }
+
+    nav ul {
+        display: flex;
+        gap: 10px;
+    }
+
+    nav ul li a {
+        font-size: 16px;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Exibe ícones no lugar do texto em telas pequenas */
+    .nav-text {
+        display: none;
+    }
+    .nav-icon {
+        display: inline;
+        font-size: 20px;
+    }
 }

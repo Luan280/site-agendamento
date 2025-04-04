@@ -6,7 +6,7 @@ header {
     position: fixed; /* Mantém o header fixo no topo */
     top: 0;
     width: 100%;
-    background-color: rgba(255, 178, 192, 0.9); /* Fundo rosado suave */
+    background-color: #ffb2c0e6; /* Fundo rosado suave */
     display: flex;
     align-items: center;
     justify-content: space-between;

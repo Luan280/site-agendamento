@@ -1,6 +1,6 @@
 /* Estilos Gerais */
 body {
-    margin-top: 5%;
+    margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -40,30 +40,25 @@ main {
 .sobre h2, .profissional h2 {
     color: #FF6B81;
     padding-bottom: 5px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 30px;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 500;
     display: flex;
     align-items: center;
     gap: 10px;
-    display: inline;
 }
 
-.sobre img, .profissional img {
-    padding-top: 0;
-    
+.sobre h2 img, .profissional h2 img {
+    width: 24px;
+    height: 24px;
 }
 
-#caracteristicas{ 
-    margin-left: 15%;
-}
 .sobre p {
     background: linear-gradient(to right, #ffb2c0, #ffc0cb, #fcc6cf, #ffd6dd, #ffdbe1);
     padding: 15px;
-    border-radius: 20px;
+    border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: 'Lora', serif;
     font-weight: 300;
-    font-size: 25px;
 }   
 
 .profissional h3 {
@@ -82,7 +77,7 @@ ul li {
 footer {
     text-align: center;
     padding: 10px;
-    background-color: #ffb2c0e6;
+    background-color: #b38b6d;
     color: white;
     margin-top: 20px;
     width: 100%;
