@@ -156,6 +156,21 @@ body {
     background-color: #ff6b81; /* Tom mais escuro ao passar o mouse */
 }
 
+.day-not-available {
+    width: 70px;
+    height: 70px;
+    background-color: #ff6b81; /* Cor principal rosada */
+    color: #fff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .modal {
     display: none;
     position: fixed;

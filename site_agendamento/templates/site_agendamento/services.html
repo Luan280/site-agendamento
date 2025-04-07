@@ -1,5 +1,6 @@
 {% extends "global/partials/base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block css-content %}
     <link rel="stylesheet" href="{% static "global/css/services.css" %}">
@@ -39,9 +40,9 @@
                     <img src="{{ service.image.url }}" alt="{{ service.name }}">
                     <h3>{{ service.name }}</h3>
                     <p>{{ service.description }}</p>
-                    <p><strong>Aplicação:</strong> R$ {{ service.application }}</p>
+                    <p><strong>Aplicação:</strong> {{ service.application|get_total_value }}</p>
                     <p><strong>Manutenção:</strong> R$ {{ service.maintenance }}</p>
-                    <p><strong>Duração:</strong> {{ service.duration }} minutos</p>
+                    <p><strong>Duração:</strong> {{ service.duration|duration_format}}</p>
                     <!-- Link para agendar horário -->
                     <a href="{% url 'calendario' service.id %}">Agendar horário</a>
                 </div>

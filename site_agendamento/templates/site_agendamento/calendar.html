@@ -1,5 +1,6 @@
 {% extends "global/partials/base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block css-content %}
 <link rel="stylesheet" href="{% static "global/css/index.css" %}">
@@ -21,7 +22,7 @@
 				<img src="{{ service.image.url }}" alt="{{ service.name }}">
 				<h3>{{ service.name }}</h3>
 				<p>{{ service.description }}</p>
-				<p><strong>Duração:</strong> {{ service.duration }} minutos</p>
+				<p><strong>Duração:</strong> {{ service.duration|duration_format }}</p>
         {% if not service.maintenance == None %}   
         <div class="checkbox-group">
             <form id="service-form" method="GET" action="{% url 'calendario' service.id %}">
@@ -36,7 +37,7 @@
                         <input type="radio" name="service_type" value="aplicacao" 
                             {% if service_type == "aplicacao" %}checked{% endif %}
                             onchange="this.form.submit()">
-                        Aplicação: R$ {{ service.application }}
+                        Aplicação: {{ service.application|get_total_value }}
                     </label>
                 </div>
             </div>
@@ -48,7 +49,7 @@
                         <input type="radio" name="service_type" value="aplicacao" 
                             {% if service_type == "aplicacao" %}checked{% endif %}
                             onchange="this.form.submit()">
-                        Aplicação: R$ {{ service.application }}
+                        Aplicação: {{ service.application|get_total_value }}
                     </label>
                 </div>
             </form>   
@@ -78,9 +79,16 @@
             {% endfor %}
             
             {% for item in calendario %}
-            <div class="day" onclick="document.getElementById('modal-{{ item.dia }}').classList.add('active')">
-                {{ item.dia.day }}
-            </div>
+                {% if item.dia.day < dia_atual.day %}
+                    <div class="day-not-available">
+                        {{ item.dia.day }}
+                    </div>
+                {% else %}
+                    <div class="day" onclick="document.getElementById('modal-{{ item.dia }}').classList.add('active')">
+                        {{ item.dia.day }}
+                    </div>
+                {% endif %}
+                
             {% if service_type%}
                 <!-- Modal para selecionar horários -->
                 <div id="modal-{{ item.dia }}" class="modal">

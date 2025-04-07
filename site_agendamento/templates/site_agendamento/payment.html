@@ -1,5 +1,6 @@
 {% extends "global/partials/base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block css-content %}
     <link rel="stylesheet" href="{% static 'global/css/payment.css' %}">
@@ -23,10 +24,10 @@
         <h2>Resumo do Serviço</h2>
             <img src="{{ service.image.url }}" alt="{{ service.name }}">
             <h3>{{ service.name }}</h3>
-            <p><strong>Duração:</strong> {{ service.duration }} minutos</p>
+            <p><strong>Duração:</strong> {{ formatted_duration }}</p>
             <p><strong>Tipo de serviço:</strong> {{ service_type }}</p>
-            <p><strong>Data:</strong> {{ date }}</p>
-            <p><strong>Horário:</strong> {{ time }}</p>
+            <p><strong>Data:</strong> {{ date }} - ({{ name_week}})</p>
+            <p><strong>Horário:</strong> {{ time }}h</p>
             <p><strong>Valor Total:</strong> R$ {{ service.application }}</p>
     </div>
     <!-- Formulário de Cliente + Pagamento -->
@@ -59,13 +60,13 @@
                         <input type="radio" name="payment_type" value="sinal" 
                             {% if payment_type == "sinal" %}checked{% endif %}
                             onchange="this.form.submit()">
-                            Pagar sinal e o restante no estabelecimento: R$ {{ service.application }}
+                            Pagar sinal e o restante no estabelecimento: {{ service.application|get_half_value }}
                     </label>
                     <label>
                         <input type="radio" name="payment_type" value="completo" 
                             {% if payment_type == "completo" %}checked{% endif %}
                             onchange="this.form.submit()">
-                            Pagar  o valor total: R$ {{ service.application }}
+                            Pagar  o valor total: {{ service.application|get_total_value }}
                     </label>
                 
                 <button type="button" class="btn-pay" onclick="showModalQrcode()">Gerar QR Code</button>
