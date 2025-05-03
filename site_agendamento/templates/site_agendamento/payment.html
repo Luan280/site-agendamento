@@ -35,8 +35,6 @@
         <h2>Confirme seus dados:</h2>
         <form id="customer-form">
             {% csrf_token %}
-
-            <!-- Entrada de Nome e Telefone -->
             <div class="input-row">
                 <div class="input-group">
                     <label for="name">Nome completo:</label>
@@ -52,31 +50,26 @@
                 </div>
             </div>
         </form>
-        <!-- Opções de Pagamento -->
-        <div class="box box-payment">
-            <form id="payment-form">
-                <h2>Forma de pagamento:</h2>
-                    <label>
-                        <input type="radio" name="payment_type" value="sinal" 
-                            {% if payment_type == "sinal" %}checked{% endif %}
-                            onchange="this.form.submit()">
-                            Pagar sinal e o restante no estabelecimento: {{ service.application|get_half_value }}
-                    </label>
-                    <label>
-                        <input type="radio" name="payment_type" value="completo" 
-                            {% if payment_type == "completo" %}checked{% endif %}
-                            onchange="this.form.submit()">
-                            Pagar  o valor total: {{ service.application|get_total_value }}
-                    </label>
-                
-                <button type="button" class="btn-pay" onclick="showModalQrcode()">Gerar QR Code</button>
-                <button type="button" class="btn-pay" onclick="showModalCartao()">Cartão de Crétido</button>
-            </form>
+        <div class="input-row">
+            <label>
+                <input type="radio" name="payment_type" value="sinal" 
+                    {% if payment_type == "sinal" %}checked{% endif %}
+                    onchange="this.form.submit()">
+                    Pagar sinal e o restante no estabelecimento: {{ service.application|get_half_value }}
+            </label>
+            <label>
+                <input type="radio" name="payment_type" value="completo" 
+                    {% if payment_type == "completo" %}checked{% endif %}
+                    onchange="this.form.submit()">
+                    Pagar  o valor total: {{ service.application|get_total_value }}
+            </label>
+            <button type="button" class="btn-pay" onclick="showModalQrcode()">Pagar com Pix</button>
+            <button type="button" class="btn-pay" onclick="showModalCartao()">Pagar com Cartão</button>
         </div>
     </div>
 </div>
-<!-- Modal de Pagamento -->
-{% if payment_type %}
+
+
     <div id="payment-qrcode" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModalQrcode()">&times;</span>
@@ -89,27 +82,118 @@
     <div id="payment-cartao" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModalCartao()">&times;</span>
-            <h3>Digite os dados do cartão: </h3>
-            
-            <p>Após o pagamento, sua reserva será confirmada.</p>
+            <h3>Digite os dados do cartão:</h3>
+            <form id="form-checkout">
+                <div id="form-checkout__cardNumber" class="input-group"></div>
+                <div id="form-checkout__expirationDate" class="input-group"></div>
+                <div id="form-checkout__securityCode" class="input-group"></div>
+                <input type="text" id="form-checkout__cardholderName" placeholder="Titular do cartão" class="input-group">
+                <select id="form-checkout__issuer" class="input-group"></select>
+                <select id="form-checkout__installments" class="input-group"></select>
+                <select id="form-checkout__identificationType" class="input-group"></select>
+                <input type="text" id="form-checkout__identificationNumber" placeholder="Número do documento" class="input-group">
+                <input type="email" id="form-checkout__cardholderEmail" placeholder="E-mail" class="input-group">
+                <button type="submit" class="btn-pay">Pagar</button>
+                <progress value="0" class="progress-bar">Carregando...</progress>
+            </form>
         </div>
     </div>
-{% endif %}
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
+
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const mp = new MercadoPago("{{ MERCADO_PAGO_PUBLIC_KEY }}");
+
+  const cardForm = mp.cardForm({
+    amount: "{{ service.application }}",
+    iframe: true,
+    form: {
+      id: "form-checkout",
+      cardNumber: { id: "form-checkout__cardNumber", placeholder: "Número do cartão" },
+      expirationDate: { id: "form-checkout__expirationDate", placeholder: "MM/YY" },
+      securityCode: { id: "form-checkout__securityCode", placeholder: "Código de segurança" },
+      cardholderName: { id: "form-checkout__cardholderName", placeholder: "Titular do cartão" },
+      issuer: { id: "form-checkout__issuer", placeholder: "Banco emissor" },
+      installments: { id: "form-checkout__installments", placeholder: "Parcelas" },
+      identificationType: { id: "form-checkout__identificationType", placeholder: "Tipo de documento" },
+      identificationNumber: { id: "form-checkout__identificationNumber", placeholder: "Número do documento" },
+      cardholderEmail: { id: "form-checkout__cardholderEmail", placeholder: "E-mail" },
+    },
+    callbacks: {
+      onFormMounted: error => {
+        if (error) {
+          console.error("Erro ao montar o formulário:", error);
+          return;
+        }
+        console.log("Formulário carregado com sucesso");
+      },
+      onSubmit: event => {
+        event.preventDefault();
+        const data = cardForm.getCardFormData();
+
+        fetch("{% url 'process_payment' %}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+          body: JSON.stringify({
+            token: data.token,
+            issuer_id: data.issuerId,
+            payment_method_id: data.paymentMethodId,
+            transaction_amount: Number(data.amount),
+            installments: Number(data.installments),
+            description: "{{ service.name }}",
+            payer: {
+              email: data.cardholderEmail,
+              identification: {
+                type: data.identificationType,
+                number: data.identificationNumber,
+              },
+            },
+          }),
+        })
+          .then(res => res.json())
+          .then(result => {
+            if (result.status === 'approved') {
+              alert("Pagamento aprovado!");
+              window.location.href = "/confirmado/";
+            } else {
+              alert("Pagamento recusado: " + result.status_detail);
+            }
+          })
+          .catch(error => {
+            console.error("Erro ao processar pagamento:", error);
+            alert("Erro ao processar pagamento.");
+          });
+      },
+      onFetching: resource => {
+        console.log("Carregando:", resource);
+        const progressBar = document.querySelector(".progress-bar");
+        progressBar.removeAttribute("value");
+        return () => {
+          progressBar.setAttribute("value", "0");
+        };
+      }
+    }
+  });
+});
+</script>
 <script src='https://code.jquery.com/jquery-3.7.1.min.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
-<script>$('#phone').mask('(00) 00000-0000', {placeholder: "(11) 96829-9535"});</script>
 <script>
+    $('#phone').mask('(00) 00000-0000', {placeholder: "(11) 96829-9535"});
     function showModalQrcode() {
         document.getElementById("payment-qrcode").classList.add("active");
     }
-    
     function closeModalQrcode() {
         document.getElementById("payment-qrcode").classList.remove("active");
     }
     function showModalCartao() {
         document.getElementById("payment-cartao").classList.add("active");
     }
-    
     function closeModalCartao() {
         document.getElementById("payment-cartao").classList.remove("active");
     }

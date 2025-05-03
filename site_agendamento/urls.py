@@ -17,4 +17,7 @@ urlpatterns = [
     path('sobre/', views.about_view, name='about'),
 
     path('agendamentos/', views.appoinments_view, name='appoinments'),
+
+    path("process_payment/", views.process_payment, name="process_payment"),  # type: ignore
+
 ]

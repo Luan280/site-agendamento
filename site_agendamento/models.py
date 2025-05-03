@@ -22,7 +22,8 @@ class Service(models.Model):
     image = models.ImageField(upload_to='services/', blank=True)
     description = models.TextField(blank=True, null=True)
     application = models.DecimalField(max_digits=10, decimal_places=2)
-    maintenance = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    maintenance = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True)
     duration = models.IntegerField(help_text="Duração em minutos")
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -64,8 +65,10 @@ class Appointment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     calendar = models.OneToOneField(Calendar, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
-    type_service = models.CharField(max_length=10, choices=TYPE_CHOICES, default='aplicação')
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, default='pendente')
+    type_service = models.CharField(
+        max_length=10, choices=TYPE_CHOICES, default='aplicação')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

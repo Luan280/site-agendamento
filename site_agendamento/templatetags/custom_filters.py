@@ -1,9 +1,9 @@
 from django import template
-from site_agendamento.utils.helpers import format_duration, get_values
+from site_agendamento.utils.helpers import format_duration
 
 register = template.Library()
 
-
+# Formatação de campos
 @register.filter
 def duration_format(minutes):
     return format_duration(minutes)

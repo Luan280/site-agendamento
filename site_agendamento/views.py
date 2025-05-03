@@ -1,10 +1,14 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 from .models import User, Calendar, Appointment, Service
 from sqlite3 import IntegrityError
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+import requests
+from django.conf import settings
 from site_agendamento.utils.helpers import (
     format_weekday, get_formatted_date_and_time,
-    get_mes_info, get_service_by_id, format_duration, get_values
+    get_mes_info, get_service_by_id, format_duration
 )
 
 
@@ -124,6 +128,25 @@ def payment_view(request, service_type, service_id, date, time):
         "formatted_duration": formatted_duration,
     }
     return render(request, "site_agendamento/payment.html", context)
+
+
+@csrf_exempt
+def process_payment(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        headers = {
+            "Authorization": f"Bearer {settings.MERCADO_PAGO_ACCESS_TOKEN}",
+            "Content-Type": "application/json"
+        }
+
+        response = requests.post(
+            "https://api.mercadopago.com/v1/payments",
+            headers=headers,
+            json=data
+        )
+
+        return JsonResponse(response.json())
 
 
 def get_client_data(request):
